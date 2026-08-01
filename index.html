@@ -48,7 +48,7 @@
         <span>2026.09.19 <em>sat</em> — 09.20 <em>sun</em></span>
         <span class="hero__date-line"></span>
       </p>
-      <h1 class="hero__title">あの日の教室を<br>飛び出した先に。</h1>
+      <h1 class="hero__title">あの日の教室を<br>飛び出した<em>先に。</em></h1>
       <p class="hero__sub">大阪から回転サロンバスで淡路島へ。プライベートサウナとBBQ、<br class="hide-sp">中学の仲間と過ごす、大人だけの修学旅行。</p>
 
       <div class="hero__countdown" id="countdown">
@@ -78,7 +78,7 @@
       </header>
 
       <div class="cards">
-        <article class="card">
+        <article class="card reveal">
           <figure class="card__fig">
             <img src="./images/chartered_bus_trip.png" alt="貸切バス" class="card__img" loading="lazy">
             <span class="card__no">01</span>
@@ -90,7 +90,7 @@
           </div>
         </article>
 
-        <article class="card card--rev">
+        <article class="card card--rev reveal reveal-delay-1">
           <figure class="card__fig">
             <img src="./images/resort_villa_sauna.png" alt="サウナヴィラ" class="card__img" loading="lazy">
             <span class="card__no">02</span>
@@ -102,7 +102,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card reveal reveal-delay-2">
           <figure class="card__fig">
             <img src="./images/bbq_party_night.png" alt="BBQ宴会" class="card__img" loading="lazy">
             <span class="card__no">03</span>
@@ -129,7 +129,7 @@
 
       <div class="villa-grid">
         <!-- Villa 1 -->
-        <div class="villa-card">
+        <div class="villa-card reveal">
           <div class="villa-card__tag">10〜12名向け・最高コスパ</div>
           <h3 class="villa-card__title">BREEZE AWAJI GOSHIKIHAMA</h3>
           <p class="villa-card__loc">📍 五色浜エリア（1棟貸切 / 最大12名）</p>
@@ -143,7 +143,7 @@
         </div>
 
         <!-- Villa 2 -->
-        <div class="villa-card">
+        <div class="villa-card reveal reveal-delay-1">
           <div class="villa-card__tag">10〜12名向け・夕日絶景</div>
           <h3 class="villa-card__title">サンセットヴィラ淡路</h3>
           <p class="villa-card__loc">📍 西海岸エリア（1棟貸切 / 最大12名）</p>
@@ -157,7 +157,7 @@
         </div>
 
         <!-- Villa 3 -->
-        <div class="villa-card">
+        <div class="villa-card reveal reveal-delay-2">
           <div class="villa-card__tag">8〜16名向け・ラグジュアリー</div>
           <h3 class="villa-card__title">プライベートヴィラAWAJI ジェイアイランド</h3>
           <p class="villa-card__loc">📍 岩屋エリア（300㎡超 大空間 / 最大16名）</p>
@@ -171,7 +171,7 @@
         </div>
 
         <!-- Villa 4 -->
-        <div class="villa-card">
+        <div class="villa-card reveal reveal-delay-3">
           <div class="villa-card__tag">15〜30名向け・複数棟手配</div>
           <h3 class="villa-card__title">SolaVilla (そらヴィラ) 海テラス南あわじ</h3>
           <p class="villa-card__loc">📍 南あわじエリア（全15棟 / 2〜5棟手配で大宴会）</p>
@@ -198,20 +198,20 @@
       </header>
 
       <div class="bus-info-grid">
-        <div class="bus-box">
+        <div class="bus-box reveal">
           <h4 class="bus-box__h">🚍 中型サロンバス（20〜27名定員）</h4>
           <p class="bus-box__p">15〜20名規模に最適。後部1〜2列が回転サロン仕様。移動中から冷えたビールで乾杯できます！</p>
           <div class="bus-box__cost">トータル目安: <strong>約 16.5万円 〜 22.5万円</strong>（1人約8,000〜13,000円）</div>
         </div>
 
-        <div class="bus-box">
+        <div class="bus-box reveal reveal-delay-1">
           <h4 class="bus-box__h">🚌 大型サロンバス（40〜49名定員）</h4>
           <p class="bus-box__p">20〜30名規模や荷物が多い場合に最適。ゆったり空間＆大型冷蔵庫完備。</p>
           <div class="bus-box__cost">トータル目安: <strong>約 20.5万円 〜 28.5万円</strong>（1人約8,000〜12,000円）</div>
         </div>
       </div>
 
-      <div class="bus-partners">
+      <div class="bus-partners reveal">
         <h4 class="bus-partners__title">手配候補バス会社・相見積もりサービス</h4>
         <div class="bus-partners__tags">
           <a href="https://www.nihonkotsu.co.jp/bus/rental/" target="_blank" rel="noopener" class="bus-partner-btn">日本交通（関西最大手・安定運行）</a>
@@ -233,7 +233,7 @@
         <div class="sec__bar"></div>
       </header>
 
-      <div class="day-tabs">
+      <div class="day-tabs reveal">
         <button class="day-tab active" onclick="switchDay(1)">
           <span class="day-tab__d">Day 1</span>
           <span class="day-tab__date">9/19 (土)</span>
@@ -244,7 +244,7 @@
         </button>
       </div>
 
-      <ol id="timeline-day-1" class="tl">
+      <ol id="timeline-day-1" class="tl reveal">
         <li class="tl__item">
           <time class="tl__time">10:00</time>
           <div class="tl__dot"></div>
@@ -301,7 +301,7 @@
         </li>
       </ol>
 
-      <ol id="timeline-day-2" class="tl" style="display:none;">
+      <ol id="timeline-day-2" class="tl reveal" style="display:none;">
         <li class="tl__item">
           <time class="tl__time">08:00</time>
           <div class="tl__dot"></div>
@@ -350,7 +350,7 @@
         <h2 class="sec__jp">持ち物チェックリスト</h2>
         <div class="sec__bar"></div>
       </header>
-      <ul class="pack-list">
+      <ul class="pack-list reveal">
         <li>水着・ラッシュガード（サウナ水風呂用）</li>
         <li>着替え・パジャマ</li>
         <li>タオル（ヴィラにもあり）</li>
@@ -372,7 +372,7 @@
         <div class="sec__bar"></div>
       </header>
 
-      <div class="calc">
+      <div class="calc reveal">
         <div class="calc__slider-wrap">
           <label class="calc__slider-label">
             <span>想定参加人数</span>
@@ -416,7 +416,7 @@
         <div class="sec__bar"></div>
       </header>
 
-      <form id="rsvp-form" class="rsvp" onsubmit="submitRSVP(event)">
+      <form id="rsvp-form" class="rsvp reveal" onsubmit="submitRSVP(event)">
         <div class="rsvp__row2">
           <div class="field">
             <label for="user-name" class="field__label">お名前 <span class="field__req">*</span></label>

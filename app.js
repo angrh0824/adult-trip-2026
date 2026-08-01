@@ -307,10 +307,38 @@ function initNav() {
   }));
 }
 
+/* ─── Scroll Effects ─── */
+function initScrollEffects() {
+  // Nav background on scroll
+  const nav = document.getElementById('main-nav');
+  if (nav) {
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // Scroll reveal animation
+  const revealEls = document.querySelectorAll('.reveal');
+  if (revealEls.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('visible'));
+  }
+}
+
 /* ─── Init ─── */
 document.addEventListener('DOMContentLoaded', () => {
   tick(); setInterval(tick, 1000);
   updateCalculator();
   initNav();
+  initScrollEffects();
   document.getElementById('open-pin-btn').addEventListener('click', openPINModal);
 });
