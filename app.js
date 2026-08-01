@@ -10,6 +10,11 @@ const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwqlvTGh9oJ7fUM
 // 幹事用パスコード（全端末で共通）
 const DEFAULT_PIN = '2026';
 
+/* ─── Selection State ─── */
+let selectedVenueCard = null;
+let selectedVenuePrice = null; // per-person midpoint
+let selectedBusType = null;    // 'car' | 'bus' | null (auto)
+
 function getGasUrl() {
   return localStorage.getItem('gas_url') || DEFAULT_GAS_URL;
 }
@@ -57,6 +62,76 @@ function switchDay(n) {
   document.getElementById('timeline-day-2').style.display = n===2 ? 'flex' : 'none';
 }
 
+/* ─── Group Size Tabs ─── */
+function switchGroupSize(n) {
+  document.querySelectorAll('.group-tab').forEach((b,i) => b.classList.toggle('active', i===n-1));
+  document.querySelectorAll('.venue-panel').forEach((p,i) => {
+    p.classList.toggle('active', i===n-1);
+    if (i===n-1) {
+      // Re-trigger reveal animations for newly shown cards
+      p.querySelectorAll('.venue-card').forEach((card, ci) => {
+        card.classList.remove('visible');
+        setTimeout(() => card.classList.add('visible'), ci * 80);
+      });
+    }
+  });
+}
+
+/* ─── Venue & Bus Selection ─── */
+function selectVenue(card) {
+  if (selectedVenueCard === card) {
+    card.classList.remove('selected');
+    selectedVenueCard = null;
+    selectedVenuePrice = null;
+  } else {
+    document.querySelectorAll('.venue-card.selected').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedVenueCard = card;
+    const priceEl = card.querySelector('.venue-card__price');
+    if (priceEl) {
+      const nums = priceEl.textContent.match(/\d{1,3}(?:,\d{3})+/g);
+      if (nums) {
+        const values = nums.map(n => parseInt(n.replace(/,/g, '')));
+        selectedVenuePrice = Math.round(values.reduce((a,b) => a+b, 0) / values.length);
+      }
+    }
+  }
+  updateCalculator();
+  updateSelectionDisplay();
+}
+
+function selectBus(box) {
+  const type = box.dataset.busType;
+  if (selectedBusType === type) {
+    box.classList.remove('selected');
+    selectedBusType = null;
+  } else {
+    document.querySelectorAll('.bus-box.selected').forEach(b => b.classList.remove('selected'));
+    box.classList.add('selected');
+    selectedBusType = type;
+  }
+  updateCalculator();
+  updateSelectionDisplay();
+}
+
+function updateSelectionDisplay() {
+  const infoEl = document.getElementById('calc-selected-info');
+  if (!infoEl) return;
+  let html = '';
+  if (selectedVenueCard) {
+    const title = selectedVenueCard.querySelector('.venue-card__title');
+    html += `<span class="calc__selected-tag">🏠 ${title ? title.textContent : '施設'} (¥${selectedVenuePrice?.toLocaleString()}/人)</span>`;
+  } else {
+    html += '<span class="calc__selected-tag calc__selected-tag--empty">🏠 施設を選択してください</span>';
+  }
+  if (selectedBusType) {
+    html += `<span class="calc__selected-tag">${selectedBusType === 'bus' ? '🚌 貸切バス' : '🚗 レンタカー'}</span>`;
+  } else {
+    html += '<span class="calc__selected-tag calc__selected-tag--empty">🚌 移動手段を選択（自動判定中）</span>';
+  }
+  infoEl.innerHTML = html;
+}
+
 /* ─── Calculator ─── */
 function updateCalculator() {
   const c = +document.getElementById('headcount-slider').value;
@@ -64,13 +139,15 @@ function updateCalculator() {
 
   // 12人以下: バスなし・サウナ付きヴィラ（サウナ付きは最大12名程度）
   // 13人以上: バスあり・サウナなし大型ヴィラ
-  const useBus = c > 12;
+  const useBus = selectedBusType ? (selectedBusType === 'bus') : (c > 12);
   // レンタカー: 1台7人乗りで最大6名乗車 → 12人なら2台必要
   const rentalCars = useBus ? 0 : Math.ceil(c / 6);
   const busCost = useBus ? (c <= 20 ? 220000 : 280000) : rentalCars * 35000;
-  const villaCost = useBus
-    ? (c <= 16 ? 250000 : (c <= 24 ? 320000 : 400000))
-    : (c <= 8 ? 150000 : 200000);
+  const villaCost = selectedVenuePrice
+    ? selectedVenuePrice * c
+    : (useBus
+      ? (c <= 16 ? 250000 : (c <= 24 ? 320000 : 400000))
+      : (c <= 8 ? 150000 : 200000));
   const bbqCost = 6000 * c;
   const miscCost = 1000 * c;
   const insCost = 700 * c;
@@ -98,10 +175,17 @@ function updateCalculator() {
   const elVillaLabel = document.getElementById('cost-villa-label');
   const elNote = document.getElementById('calc-result-note');
   if (elBusLabel) elBusLabel.textContent = useBus ? '貸切バス (高速代・運転手宿泊費込)' : `レンタカー ${rentalCars}台 (ガソリン・高速代込)`;
-  if (elVillaLabel) elVillaLabel.textContent = useBus ? '大型ヴィラ宿泊代 (ハイシーズン相場)' : 'サウナ付きヴィラ宿泊代 (ハイシーズン相場)';
+  if (elVillaLabel) {
+    if (selectedVenueCard) {
+      const vTitle = selectedVenueCard.querySelector('.venue-card__title');
+      elVillaLabel.textContent = (vTitle ? vTitle.textContent : '選択施設') + ' 宿泊代 (中央値)';
+    } else {
+      elVillaLabel.textContent = useBus ? '大型ロッジ・コテージ 宿泊代 (ハイシーズン相場)' : 'サウナ付き施設 宿泊代 (ハイシーズン相場)';
+    }
+  }
   if (elNote) elNote.textContent = useBus
-    ? '貸切バス / 大型ヴィラ / 特選BBQ・生ビール / 保険含む'
-    : 'レンタカー / サウナ付きヴィラ / 特選BBQ・生ビール / 保険含む';
+    ? '貸切バス / 大型ロッジ・コテージ / 特選BBQ・生ビール / 保険含む'
+    : 'レンタカー / サウナ付き施設 / 特選BBQ・生ビール / 保険含む';
 }
 
 /* ─── Segmented Radio ─── */
@@ -550,6 +634,76 @@ function initVillaScroll() {
   });
 }
 
+/* ─── Scroll Progress Ring ─── */
+function initProgressRing() {
+  const ring = document.getElementById('progress-ring');
+  const fg = document.getElementById('progress-ring-fg');
+  if (!ring || !fg) return;
+  const onScroll = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    fg.style.strokeDashoffset = 100 - pct;
+    ring.classList.toggle('visible', h.scrollTop > 300);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+/* ─── Parallax Layers ─── */
+function initParallax() {
+  const layers = document.querySelectorAll('.parallax-layer');
+  if (!layers.length) return;
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      layers.forEach(layer => {
+        const speed = parseFloat(layer.dataset.speed || '0.2');
+        layer.style.transform = `translateY(${y * speed}px)`;
+      });
+      ticking = false;
+    });
+  }, { passive: true });
+}
+
+/* ─── Magnetic Buttons ─── */
+function initMagnetic() {
+  const els = document.querySelectorAll('.magnetic');
+  if (!els.length || window.matchMedia('(hover: none)').matches) return;
+  els.forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      el.style.transform = `translate(${x * 0.2}px, ${y * 0.3}px)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = '';
+    });
+  });
+}
+
+/* ─── Cursor Trail Sparkles ─── */
+function initSparkles() {
+  if (window.matchMedia('(hover: none)').matches) return;
+  let lastSparkle = 0;
+  document.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastSparkle < 80) return;
+    lastSparkle = now;
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.style.left = (e.clientX + (Math.random() - 0.5) * 20) + 'px';
+    s.style.top = (e.clientY + (Math.random() - 0.5) * 20) + 'px';
+    s.style.background = Math.random() > 0.5 ? 'var(--c-gold)' : 'rgba(255,255,255,.7)';
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 600);
+  });
+}
+
 /* ─── Init ─── */
 document.addEventListener('DOMContentLoaded', () => {
   tick(); setInterval(tick, 1000);
@@ -557,10 +711,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initScrollEffects();
   initScrollProgress();
+  initProgressRing();
+  initParallax();
+  initMagnetic();
+  initSparkles();
   initMouseStalker();
   initParticles();
   initTiltCards();
   initVillaScroll();
+  // Venue card selection (event delegation)
+  document.querySelectorAll('.venue-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return; // Don't intercept link clicks
+      selectVenue(card);
+    });
+  });
+  // Bus box selection
+  document.querySelectorAll('.bus-box').forEach(box => {
+    box.addEventListener('click', () => selectBus(box));
+  });
+  updateSelectionDisplay();
   const pinBtn = document.getElementById('open-pin-btn');
   if (pinBtn) pinBtn.addEventListener('click', openPINModal);
 });

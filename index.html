@@ -11,12 +11,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Noto+Serif+JP:wght@300;400;500;600;700;900&family=Shippori+Mincho:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
-  <link rel="stylesheet" href="./style.css?v=6">
+  <link rel="stylesheet" href="./style.css?v=7">
 </head>
 <body>
 
+  <!-- ─── Aurora Background Blobs ─── -->
+  <div class="aurora-blob aurora-blob--1" aria-hidden="true"></div>
+  <div class="aurora-blob aurora-blob--2" aria-hidden="true"></div>
+  <div class="aurora-blob aurora-blob--3" aria-hidden="true"></div>
+  <div class="aurora-blob aurora-blob--4" aria-hidden="true"></div>
+
   <!-- ─── Scroll Progress Bar ─── -->
   <div id="scroll-progress" class="scroll-progress"></div>
+
+  <!-- ─── Scroll Progress Ring ─── -->
+  <div id="progress-ring" class="progress-ring" aria-hidden="true">
+    <svg viewBox="0 0 48 48">
+      <circle class="ring-bg" cx="24" cy="24" r="20"></circle>
+      <circle class="ring-fg" id="progress-ring-fg" cx="24" cy="24" r="20"></circle>
+    </svg>
+  </div>
 
   <!-- ─── Mouse Stalker ─── -->
   <div id="mouse-stalker" class="mouse-stalker" aria-hidden="true"></div>
@@ -65,7 +79,7 @@
         <span class="hero__title-line"><span class="char">あ</span><span class="char">の</span><span class="char">日</span><span class="char">の</span><span class="char">教</span><span class="char">室</span><span class="char">を</span></span>
         <span class="hero__title-line"><span class="char">飛</span><span class="char">び</span><span class="char">出</span><span class="char">し</span><span class="char">た</span><em class="char char--gold">先</em><em class="char char--gold">に</em><em class="char char--gold">。</em></span>
       </h1>
-      <p class="hero__sub">あの頃の仲間と、もう一度。<br class="hide-sp">貸切ヴィラでBBQとサウナ、夜通しの語らいを。</p>
+      <p class="hero__sub">あの頃の仲間と、もう一度。<br class="hide-sp">貸切リゾートでBBQとサウナ、夜通しの語らいを。</p>
 
       <div class="hero__countdown" id="countdown">
         <div class="cd"><span class="cd__n" id="cd-days">00</span><span class="cd__l">days</span></div>
@@ -78,8 +92,8 @@
       </div>
 
       <div class="hero__cta">
-        <a href="#form" class="btn btn--fill">参加可否を回答する</a>
-        <a href="#villas" class="btn btn--outline">ヴィラ候補を見る</a>
+        <a href="#form" class="btn btn--fill magnetic">参加可否を回答する</a>
+        <a href="#villas" class="btn btn--outline magnetic">宿泊候補を見る</a>
       </div>
     </div>
     <div class="hero__scroll-hint">
@@ -87,6 +101,13 @@
       <div class="hero__scroll-line"></div>
     </div>
   </section>
+
+  <!-- ─── Marquee Text ─── -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>✦</span> Reunion Trip 2026 <span>✦</span> 大人の修学旅行 <span>✦</span> BBQ & Sauna <span>✦</span> 淡路島 <span>✦</span> 貸切サロンバス <span>✦</span> 卒アル持参 <span>✦</span> Reunion Trip 2026 <span>✦</span> 大人の修学旅行 <span>✦</span> BBQ & Sauna <span>✦</span> 淡路島 <span>✦</span> 貸切サロンバス <span>✦</span> 卒アル持参 <span>✦</span>
+    </div>
+  </div>
 
   <!-- ─── Concept / Highlights ─── -->
   <section id="concept" class="sec">
@@ -107,7 +128,7 @@
           <div class="card__body">
             <span class="card__cat">Transportation</span>
             <h3 class="card__title">回転サロンシートで、<br>走る居酒屋。</h3>
-            <p class="card__text">後部座席が向かい合う回転サロンシート仕様の貸切バスを手配。冷えた生ビールで乾杯し、中学時代の思い出BGMを流しながら淡路島へ。</p>
+            <p class="card__text">後部座席が向かい合う回転サロンシート仕様の貸切バスを手配。冷えた生ビールで乾杯し、中学時代の思い出BGMを流しながらリゾートへ。</p>
           </div>
         </article>
 
@@ -130,84 +151,475 @@
           </figure>
           <div class="card__body">
             <span class="card__cat">Gastronomy & Night</span>
-            <h3 class="card__title">特選淡路牛と、<br>夜更かしの大宴会。</h3>
-            <p class="card__text">夕暮れのテラスで淡路牛と海鮮の炭火焼きBBQ。卓上生ビールサーバーを囲み、夜は卒アルを広げて大部屋で深夜トーク。</p>
+            <h3 class="card__title">特選和牛BBQと、<br>夜更かしの大宴会。</h3>
+            <p class="card__text">夕暮れのテラスで特選和牛と海鮮の炭火焼きBBQ。卓上生ビールサーバーを囲み、夜は卒アルを広げて大部屋で深夜トーク。</p>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ─── Real Villa Candidates ─── -->
+  <!-- ─── Accommodation Candidates by Group Size ─── -->
   <section id="villas" class="sec sec--dark">
     <div class="sec__bg-text" aria-hidden="true">Accommodations</div>
     <div class="wrap">
       <header class="sec__head">
         <span class="sec__en">Accommodations</span>
-        <h2 class="sec__jp">宿泊候補ヴィラ・ロケーション</h2>
-        <p class="sec__lead">参加人数に応じて2パターンから選択。サウナ付き（〜12名）or 大型ヴィラ（13名〜）</p>
+        <h2 class="sec__jp">宿泊候補・ロケーション</h2>
+        <p class="sec__lead">参加人数に応じた4パターンを提案。タブで切り替えてチェック！</p>
         <div class="sec__bar"></div>
       </header>
 
-      <div class="villa-scroll">
-        <div class="villa-grid">
-          <!-- Villa 1: サウナ付き -->
-          <div class="villa-card reveal">
-            <div class="villa-card__tag">〜12名向け・サウナ付き</div>
-            <h3 class="villa-card__title">サウナ付き貸切ヴィラ（関西近郊）</h3>
-            <p class="villa-card__loc">📍 淡路島・和歌山・滋賀など（1棟貸切 / 最大12名）</p>
-            <ul class="villa-card__feats">
-              <li>本格バレルサウナ（セルフロウリュ可）</li>
-              <li>BBQテラス＆大型グリル完備</li>
-              <li>オーシャンビュー or 山間リゾート</li>
+      <div class="group-tabs reveal">
+        <button class="group-tab active" onclick="switchGroupSize(1)">
+          <span class="group-tab__size">〜10名</span>
+          <span class="group-tab__label">サウナ付き</span>
+        </button>
+        <button class="group-tab" onclick="switchGroupSize(2)">
+          <span class="group-tab__size">10〜15名</span>
+          <span class="group-tab__label">中型コテージ</span>
+        </button>
+        <button class="group-tab" onclick="switchGroupSize(3)">
+          <span class="group-tab__size">15〜20名</span>
+          <span class="group-tab__label">大型ロッジ</span>
+        </button>
+        <button class="group-tab" onclick="switchGroupSize(4)">
+          <span class="group-tab__size">20〜30名</span>
+          <span class="group-tab__label">団体対応施設</span>
+        </button>
+      </div>
+
+      <!-- Panel 1: 〜10名 サウナ付き -->
+      <div class="venue-panel active" id="venue-panel-1">
+        <div class="venue-grid">
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 サウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">GLAMP ELEMENT</h3>
+            <p class="venue-card__loc">📍 滋賀県米原市（大阪から約1.5時間）/ 最大8名</p>
+            <ul class="venue-card__feats">
+              <li>琵琶湖畔のプレミアムグランピング</li>
+              <li>湖畔サウナ＆水風呂で「ととのう」</li>
+              <li>オールインクルーシブ（食事・ドリンク込み）</li>
             </ul>
-            <div class="villa-card__price">ハイシーズン約 15万〜25万円/棟（1人あたり約15,000円〜）</div>
-            <a href="https://www.resort-glamping.com/" target="_blank" rel="noopener" class="villa-card__link">リゾートグランピングで探す ↗</a>
+            <div class="venue-card__price">1人あたり ¥25,000〜40,000</div>
+            <a href="https://www.glampelement.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
           </div>
 
-          <!-- Villa 2: サウナ付き -->
-          <div class="villa-card reveal reveal-delay-1">
-            <div class="villa-card__tag">〜12名向け・サウナ付き</div>
-            <h3 class="villa-card__title">プライベートサウナヴィラ（近郊）</h3>
-            <p class="villa-card__loc">📍 大阪から2時間圏内（1棟貸切 / 最大12名）</p>
-            <ul class="villa-card__feats">
-              <li>専用サウナ＆水風呂完備</li>
-              <li>大型BBQテラス</li>
-              <li>大人数でもゆったり過ごせる広々リビング</li>
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 バレルサウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">ステージクス高島</h3>
+            <p class="venue-card__loc">📍 滋賀県高島市（大阪から約1.5時間）/ 最大8名</p>
+            <ul class="venue-card__feats">
+              <li>琵琶湖ビーチ目の前のグランピング</li>
+              <li>本格バレルサウナ（予約制）</li>
+              <li>BBQプラン＆焚き火スペース完備</li>
             </ul>
-            <div class="villa-card__price">ハイシーズン約 12万〜20万円/棟（1人あたり約12,000円〜）</div>
-            <a href="https://yokitabi.net/" target="_blank" rel="noopener" class="villa-card__link">YOKITABIで探す ↗</a>
+            <div class="venue-card__price">1人あたり ¥15,000〜30,000</div>
+            <a href="https://stagex.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
           </div>
 
-          <!-- Villa 3: 大型 -->
-          <div class="villa-card reveal reveal-delay-2">
-            <div class="villa-card__tag">13名以上向け・大型ヴィラ</div>
-            <h3 class="villa-card__title">大型貸切ヴィラ（関西近郊）</h3>
-            <p class="villa-card__loc">📍 淡路島・和歌山・滋賀など（1棟貸切 / 最大30名）</p>
-            <ul class="villa-card__feats">
-              <li>300㎡超の大空間リビング</li>
-              <li>大人数対応のBBQエリア</li>
-              <li>複数棟手配でさらに大人数対応可能</li>
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 テントサウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 海鮮BBQ</span>
+            </div>
+            <h3 class="venue-card__title">リゾート大島</h3>
+            <p class="venue-card__loc">📍 和歌山県串本町（大阪から約2.5時間）/ 最大10名</p>
+            <ul class="venue-card__feats">
+              <li>本州最南端の海絶景キャンプ場</li>
+              <li>テントサウナ＆露天風呂完備</li>
+              <li>海鮮BBQ＆星空観察スポット</li>
             </ul>
-            <div class="villa-card__price">ハイシーズン約 25万〜40万円/棟（1人あたり約15,000円〜）</div>
-            <a href="https://www.villa-awaji-glamping.com/" target="_blank" rel="noopener" class="villa-card__link">大型ヴィラを探す ↗</a>
+            <div class="venue-card__price">1人あたり ¥5,000〜15,000</div>
+            <a href="https://www.resortohshima.com/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
           </div>
 
-          <!-- Villa 4: 大型 -->
-          <div class="villa-card reveal reveal-delay-3">
-            <div class="villa-card__tag">13名以上向け・複数棟手配</div>
-            <h3 class="villa-card__title">リゾートヴィラ複数棟手配</h3>
-            <p class="villa-card__loc">📍 全国のリゾートエリア（2〜5棟手配で大宴会）</p>
-            <ul class="villa-card__feats">
-              <li>全棟オーシャンフロント or リゾートビュー</li>
-              <li>各棟にBBQグリル＆テラス</li>
-              <li>15〜30名グループの分散＋テラス集合に最適</li>
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 サウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 アウトドアダイニング</span>
+            </div>
+            <h3 class="venue-card__title">NEMU RESORT</h3>
+            <p class="venue-card__loc">📍 三重県志摩市（大阪から約2.5時間）/ 最大8名</p>
+            <ul class="venue-card__feats">
+              <li>英虞湾を望むプレミアムリゾート</li>
+              <li>サウナ＆スパ施設完備</li>
+              <li>グランピングスタイルのBBQディナー</li>
             </ul>
-            <div class="villa-card__price">ハイシーズン 1人あたり約12,000円〜20,000円</div>
-            <a href="https://www.solavilla.jp/" target="_blank" rel="noopener" class="villa-card__link">リゾートヴィラを探す ↗</a>
+            <div class="venue-card__price">1人あたり ¥25,000〜45,000</div>
+            <a href="https://www.nemuresort.com/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 Harviasサウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">積凪 -SEKINAGI-</h3>
+            <p class="venue-card__loc">📍 香川県三豊市（大阪から約2時間）/ 最大14名</p>
+            <ul class="venue-card__feats">
+              <li>父母ヶ浜近くのプライベートヴィラ</li>
+              <li>本格Harvia製キャビンサウナ</li>
+              <li>瀬戸内海を望むBBQテラス</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥15,000〜30,000</div>
+            <a href="https://sekinagi.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
           </div>
         </div>
       </div>
+
+      <!-- Panel 2: 10〜15名 中型コテージ -->
+      <div class="venue-panel" id="venue-panel-2">
+        <div class="venue-grid">
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">FBI AWAJI</h3>
+            <p class="venue-card__loc">📍 兵庫県淡路島（大阪から約1.5時間）/ 最大15名</p>
+            <ul class="venue-card__feats">
+              <li>海辺のおしゃれアウトドアリゾート</li>
+              <li>グループキャビン＋テント泊に対応</li>
+              <li>おしゃれなBBQ＆バーラウンジ</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥8,000〜15,000</div>
+            <a href="https://www.fbi-camping.com/awaji/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 川辺BBQ</span>
+            </div>
+            <h3 class="venue-card__title">熊野 四季亭</h3>
+            <p class="venue-card__loc">📍 和歌山県田辺市（大阪から約2時間）/ 最大30名</p>
+            <ul class="venue-card__feats">
+              <li>熊野古道近くの一棟貸切ヴィラ</li>
+              <li>川辺の大型BBQスペース完備</li>
+              <li>1日1組限定のプライベート空間</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥5,000〜8,000</div>
+            <a href="https://shikitei.info/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 蒜山牛BBQ</span>
+            </div>
+            <h3 class="venue-card__title">蒜山高原コテージ</h3>
+            <p class="venue-card__loc">📍 岡山県真庭市（大阪から約2.5時間）/ 最大15名</p>
+            <ul class="venue-card__feats">
+              <li>西日本屈指の高原リゾートエリア</li>
+              <li>蒜山ジャージー牛の贅沢BBQ</li>
+              <li>複数棟手配で大人数にも対応</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥5,000〜10,000</div>
+            <a href="https://www.hiruzen.info/" target="_blank" rel="noopener" class="venue-card__link">蒜山エリア情報 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">ウッディパル余呉</h3>
+            <p class="venue-card__loc">📍 滋賀県長浜市（大阪から約1.5時間）/ 最大12名/棟</p>
+            <ul class="venue-card__feats">
+              <li>余呉湖畔の静かなコテージ村</li>
+              <li>大型BBQグリルレンタル完備</li>
+              <li>複数棟の隣接手配でグループ対応</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥4,000〜8,000</div>
+            <a href="https://woodypal.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 アメリカンBBQ</span>
+            </div>
+            <h3 class="venue-card__title">伊勢志摩エバーグレイズ</h3>
+            <p class="venue-card__loc">📍 三重県志摩市（大阪から約2.5時間）/ 〜12名/棟×2棟</p>
+            <ul class="venue-card__feats">
+              <li>アメリカンスタイルのアウトドアリゾート</li>
+              <li>本格グリルでアメリカンBBQ</li>
+              <li>カヌー・カヤック等アクティビティ充実</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥15,000〜30,000</div>
+            <a href="https://www.everglades.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 バレルサウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">IZA takashima 湊</h3>
+            <p class="venue-card__loc">📍 滋賀県高島市（大阪から約1.5時間）/ 最大15名</p>
+            <ul class="venue-card__feats">
+              <li>BEST OF VILLA 2025 第1位受賞の貸切ヴィラ</li>
+              <li>プライベートバレルサウナ＆ジャグジー＆水風呂</li>
+              <li>BBQ＆焚き火スペース完備・1日1組限定</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥15,000〜25,000</div>
+            <a href="https://go2iza.com/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 フィンランドサウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">マキノ山荘</h3>
+            <p class="venue-card__loc">📍 滋賀県高島市（大阪から約1.5時間）/ 最大15名</p>
+            <ul class="venue-card__feats">
+              <li>輸入住宅を改装した大型貸別荘</li>
+              <li>本格フィンランド製サウナ＆大型ジャグジー（8名用）</li>
+              <li>BBQ＆広々ウッドデッキで宴会</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥10,000〜18,000</div>
+            <a href="https://aco.co.jp/" target="_blank" rel="noopener" class="venue-card__link">ACOで詳細を確認 ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: 15〜20名 大型ロッジ -->
+      <div class="venue-panel" id="venue-panel-3">
+        <div class="venue-grid">
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 大型BBQ</span>
+            </div>
+            <h3 class="venue-card__title">KASHIKIRI 和歌山すさみ</h3>
+            <p class="venue-card__loc">📍 和歌山県すさみ町（大阪から約2.5時間）/ 最大55名</p>
+            <ul class="venue-card__feats">
+              <li>団体専用の大型一棟貸切施設</li>
+              <li>中庭でBBQ＆キャンプファイヤー</li>
+              <li>海まで徒歩圏内のロケーション</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥8,000〜</div>
+            <a href="https://kashi-kiri.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+              <span class="venue-badge venue-badge--onsen">♨ 温泉</span>
+            </div>
+            <h3 class="venue-card__title">WASUKI BASE びわ湖</h3>
+            <p class="venue-card__loc">📍 滋賀県高島市（大阪から約1.5時間）/ 最大48名</p>
+            <ul class="venue-card__feats">
+              <li>琵琶湖畔の大型ゲストハウス</li>
+              <li>屋根付きBBQテラスで湖を眺めて宴会</li>
+              <li>フロア貸切で大人数に最適</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥7,000〜12,000</div>
+            <a href="https://wasukibase.com/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">まほろばの家</h3>
+            <p class="venue-card__loc">📍 兵庫県淡路市（大阪から約1.5時間）/ 最大20名</p>
+            <ul class="venue-card__feats">
+              <li>淡路島の一棟貸切グループ施設</li>
+              <li>淡路牛＆海鮮のBBQプラン</li>
+              <li>ドラム缶風呂などユニーク体験</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥8,000〜10,000</div>
+            <a href="https://mahorobanoie-awaji.com/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+              <span class="venue-badge venue-badge--onsen">♨ 温泉</span>
+            </div>
+            <h3 class="venue-card__title">火の谷温泉 美杉リゾート</h3>
+            <p class="venue-card__loc">📍 三重県津市（大阪から約1.5時間）/ 最大20名</p>
+            <ul class="venue-card__feats">
+              <li>温泉付きリゾートで団体プラン充実</li>
+              <li>BBQガーデンで屋外宴会</li>
+              <li>大部屋・宴会場で就寝＆二次会</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥8,000〜15,000</div>
+            <a href="https://www.misugi.com/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">Sunset Terrace 伊勢志摩</h3>
+            <p class="venue-card__loc">📍 三重県南伊勢町（大阪から約2.5時間）/ 最大20名</p>
+            <ul class="venue-card__feats">
+              <li>オーシャンビューの豪華貸切ヴィラ</li>
+              <li>屋根付き大型テラスでBBQ（雨天OK）</li>
+              <li>追加部屋で大人数にも柔軟対応</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥10,000〜15,000</div>
+            <a href="https://www.sunset-terrace-iseshima.com/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 全棟サウナ付き</span>
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+              <span class="venue-badge venue-badge--onsen">♨ 温泉</span>
+            </div>
+            <h3 class="venue-card__title">クリスタルヴィラ白良浜</h3>
+            <p class="venue-card__loc">📍 和歌山県白浜町（大阪から約2時間）/ 最大16名/棟</p>
+            <ul class="venue-card__feats">
+              <li>全棟プライベートサウナ＆プール完備</li>
+              <li>白良浜ビーチ目の前の豪華リゾートヴィラ</li>
+              <li>BBQ＆温泉付きで究極のリゾート体験</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥20,000〜40,000</div>
+            <a href="https://crystalvilla.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 テントサウナ＋温泉サウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 BBQプラン</span>
+              <span class="venue-badge venue-badge--onsen">♨ るり渓温泉</span>
+            </div>
+            <h3 class="venue-card__title">GRAX るり渓</h3>
+            <p class="venue-card__loc">📍 京都府南丹市（大阪から約1.5時間）/ 20名+（複数棟）</p>
+            <ul class="venue-card__feats">
+              <li>関西最大級グランピングリゾート</li>
+              <li>テントサウナ＆温泉大浴場の2種サウナ</li>
+              <li>BBQプラン標準装備・送迎バスあり</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥15,000〜30,000</div>
+            <a href="https://www.grax.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4: 20〜30名 団体対応 -->
+      <div class="venue-panel" id="venue-panel-4">
+        <div class="venue-grid">
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 大型BBQ</span>
+            </div>
+            <h3 class="venue-card__title">KASHIKIRI 和歌山すさみ</h3>
+            <p class="venue-card__loc">📍 和歌山県すさみ町（大阪から約2.5時間）/ 最大55名</p>
+            <ul class="venue-card__feats">
+              <li>大人数団体専用の一棟貸切施設</li>
+              <li>広大な中庭でBBQ＆キャンプファイヤー</li>
+              <li>1日1組限定の完全プライベート</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥8,000〜</div>
+            <a href="https://kashi-kiri.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+              <span class="venue-badge venue-badge--onsen">♨ 温泉</span>
+            </div>
+            <h3 class="venue-card__title">白浜荘（琵琶湖）</h3>
+            <p class="venue-card__loc">📍 滋賀県高島市（大阪から約1.5時間）/ 30名+</p>
+            <ul class="venue-card__feats">
+              <li>琵琶湖畔の大型リゾート旅館</li>
+              <li>団体BBQ＆宴会場完備</li>
+              <li>スポーツ施設＆大浴場あり</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥8,000〜15,000</div>
+            <a href="http://www.shirahamaso.co.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">南和気荘</h3>
+            <p class="venue-card__loc">📍 岡山県美咲町（大阪から約2時間）/ 最大45名</p>
+            <ul class="venue-card__feats">
+              <li>旧校舎をリノベした団体貸切施設</li>
+              <li>テント付きBBQエリア完備</li>
+              <li>広い校庭でレクリエーション可能</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥5,000〜10,000</div>
+            <a href="https://minamiwakesou.com/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+            </div>
+            <h3 class="venue-card__title">淡路島マンモス</h3>
+            <p class="venue-card__loc">📍 兵庫県淡路市（大阪から約1.5時間）/ 最大30名</p>
+            <ul class="venue-card__feats">
+              <li>複数コテージ＆ホテル棟を団体手配</li>
+              <li>大自然の中でアウトドアBBQ</li>
+              <li>焚き火スペース＆アクティビティ充実</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥8,000〜15,000</div>
+            <a href="https://awajimammoth.com/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ＆カニ</span>
+              <span class="venue-badge venue-badge--onsen">♨ 温泉</span>
+            </div>
+            <h3 class="venue-card__title">休暇村 越前三国</h3>
+            <p class="venue-card__loc">📍 福井県坂井市（大阪から約2.5時間）/ 30名</p>
+            <ul class="venue-card__feats">
+              <li>日本海を望む国営リゾートホテル</li>
+              <li>団体BBQ＆越前ガニプラン</li>
+              <li>大浴場・露天風呂＆団体宴会場</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥10,000〜20,000</div>
+            <a href="https://www.qkamura.or.jp/echizen/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 バレル＋室内サウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+              <span class="venue-badge venue-badge--onsen">♨ 温泉</span>
+            </div>
+            <h3 class="venue-card__title">クリスタルヴィラ白良浜「別邸」</h3>
+            <p class="venue-card__loc">📍 和歌山県白浜町（大阪から約2時間）/ 最大32名</p>
+            <ul class="venue-card__feats">
+              <li>屋外バレルサウナ＆室内サウナの豪華2種</li>
+              <li>プライベートプール＆温泉完備</li>
+              <li>最大32名が1棟に泊まれる超大型ヴィラ</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥15,000〜30,000</div>
+            <a href="https://crystalvilla.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+
+          <div class="venue-card reveal">
+            <div class="venue-card__badges">
+              <span class="venue-badge venue-badge--sauna">🧖 雲海バレルサウナ</span>
+              <span class="venue-badge venue-badge--bbq">🔥 BBQ</span>
+              <span class="venue-badge venue-badge--onsen">♨ 大浴場</span>
+            </div>
+            <h3 class="venue-card__title">KASHIKIRI 奥京都</h3>
+            <p class="venue-card__loc">📍 京都府福知山市（大阪から約1.5時間）/ 最大50名</p>
+            <ul class="venue-card__feats">
+              <li>雲海を望む貸切バレルサウナ</li>
+              <li>大型BBQスペース＆広々大浴場</li>
+              <li>最大50名の超大型貸切旅館</li>
+            </ul>
+            <div class="venue-card__price">1人あたり ¥8,000〜15,000</div>
+            <a href="https://kashi-kiri.jp/" target="_blank" rel="noopener" class="venue-card__link">公式サイトで確認 ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <p class="venue-note">※ 料金はハイシーズン（9月連休）の目安です。実際の空き状況・料金は各施設の公式サイトでご確認ください。<br>※ シルバーウィーク前後（9/12〜23）で空き状況を確認し、予約を進めます。</p>
+      <p class="selection-hint">💡 施設カードをタップすると、その<strong>中央値</strong>が下の会費シミュレーションに自動反映されます。</p>
     </div>
   </section>
 
@@ -223,13 +635,13 @@
       </header>
 
       <div class="bus-info-grid">
-        <div class="bus-box reveal">
+        <div class="bus-box reveal" data-bus-type="car">
           <h4 class="bus-box__h">🚗 12名以下: マイカー・レンタカー</h4>
           <p class="bus-box__p">サウナ付きヴィラは最大12名まで。少人数ならマイカー・レンタカーで自由に移動できます。</p>
           <div class="bus-box__cost">レンタカー目安: <strong>約 2万〜4万円</strong>（1人約2,000〜4,000円）</div>
         </div>
 
-        <div class="bus-box reveal reveal-delay-1">
+        <div class="bus-box reveal reveal-delay-1" data-bus-type="bus">
           <h4 class="bus-box__h">🚌 13名以上: 貸切サロンバス</h4>
           <p class="bus-box__p">大人数になると貸切バスが便利。回転サロンシートで移動中から宴会気分！</p>
           <div class="bus-box__cost">トータル目安: <strong>約 22万〜28万円</strong>（1人約8,000〜12,000円）</div>
@@ -285,8 +697,8 @@
           <div class="tl__dot"></div>
           <div class="tl__card">
             <span class="tl__tag">ドライブ＆ランチ</span>
-            <h4 class="tl__h">明石海峡大橋 ＆ 淡路島ランチ</h4>
-            <p class="tl__p">世界最大級の吊り橋を渡り淡路島上陸。海沿いレストランで生しらす丼やご当地グルメ。</p>
+            <h4 class="tl__h">ドライブ ＆ ご当地ランチ</h4>
+            <p class="tl__p">貸切バスで絶景ドライブ。道中の名物スポットで途中下車し、ご当地グルメでランチ。</p>
           </div>
         </li>
         <li class="tl__item">
@@ -294,8 +706,8 @@
           <div class="tl__dot"></div>
           <div class="tl__card">
             <span class="tl__tag">チェックイン</span>
-            <h4 class="tl__h">リゾートヴィラ到着</h4>
-            <p class="tl__p">一棟貸切のオーシャンビューヴィラにチェックイン。広いリビングとプライベートデッキを開放。</p>
+            <h4 class="tl__h">宿泊施設到着</h4>
+            <p class="tl__p">貸切のリゾート施設にチェックイン。広いリビングとプライベート空間を開放。</p>
           </div>
         </li>
         <li class="tl__item">
@@ -303,8 +715,8 @@
           <div class="tl__dot"></div>
           <div class="tl__card">
             <span class="tl__tag">サウナ＆スパ</span>
-            <h4 class="tl__h">バレルサウナ ＆ 外気浴セッション</h4>
-            <p class="tl__p">アロマ水セルフロウリュ → 冷水風呂 → オーシャンビューテラスでインフィニティチェア外気浴。</p>
+            <h4 class="tl__h">サウナ ＆ 外気浴セッション</h4>
+            <p class="tl__p">セルフロウリュ → 水風呂 → 開放的なテラスでインフィニティチェア外気浴（施設による）。</p>
           </div>
         </li>
         <li class="tl__item">
@@ -312,8 +724,8 @@
           <div class="tl__dot"></div>
           <div class="tl__card">
             <span class="tl__tag">BBQディナー</span>
-            <h4 class="tl__h">特選淡路牛BBQ ＆ 生ビールサーバー</h4>
-            <p class="tl__p">絶品お肉と海鮮の炭火焼きBBQ。注ぎたての生ビールでテラスの大宴会が始まる。</p>
+            <h4 class="tl__h">特選和牛BBQ ＆ 生ビールサーバー</h4>
+            <p class="tl__p">特選和牛と海鮮の炭火焼きBBQ。注ぎたての生ビールでテラスの大宴会が始まる。</p>
           </div>
         </li>
         <li class="tl__item">
@@ -342,8 +754,8 @@
           <div class="tl__dot"></div>
           <div class="tl__card">
             <span class="tl__tag">チェックアウト</span>
-            <h4 class="tl__h">淡路島観光スポット巡り</h4>
-            <p class="tl__p">のじまスコーラ、淡路島クラフトサーカスなど話題のスポットをバスで巡る。</p>
+            <h4 class="tl__h">周辺観光スポット巡り</h4>
+            <p class="tl__p">宿泊地周辺の話題スポットや絶景ポイントをバスで巡る。</p>
           </div>
         </li>
         <li class="tl__item">
@@ -352,7 +764,7 @@
           <div class="tl__card">
             <span class="tl__tag">ランチ＆お土産</span>
             <h4 class="tl__h">〆のご当地ランチ ＆ お土産タイム</h4>
-            <p class="tl__p">淡路島特産の甘い玉ねぎや地酒をお買い物。新鮮なお刺身ランチで旅の締め。</p>
+            <p class="tl__p">ご当地の名産品や地酒をお買い物。新鮮なお刺身ランチで旅の締め。</p>
           </div>
         </li>
         <li class="tl__item">
@@ -396,11 +808,12 @@
       <header class="sec__head">
         <span class="sec__en">Cost Simulation</span>
         <h2 class="sec__jp">会費シミュレーション</h2>
-        <p class="sec__lead">12名以下: バスなし・サウナ付きヴィラ / 13名以上: バスあり・大型ヴィラで自動計算</p>
+        <p class="sec__lead">12名以下: バスなし・サウナ付き施設 / 13名以上: バスあり・大型ロッジ・コテージで自動計算</p>
         <div class="sec__bar"></div>
       </header>
 
       <div class="calc reveal">
+        <div class="calc__selected-info" id="calc-selected-info"></div>
         <div class="calc__slider-wrap">
           <label class="calc__slider-label">
             <span>想定参加人数</span>
@@ -603,6 +1016,6 @@
     <p class="footer__jp">大人の修学旅行 実行委員会</p>
   </footer>
 
-  <script src="./app.js?v=6"></script>
+  <script src="./app.js?v=7"></script>
 </body>
 </html>
