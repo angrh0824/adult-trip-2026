@@ -7,6 +7,8 @@ const TRIP_DATE = new Date('2026-09-19T10:00:00+09:00').getTime();
 /* ─── Global Configuration ─── */
 // 発行したGASのウェブアプリURLをここに設定すると、すべての端末で共有されます
 const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwqlvTGh9oJ7fUM7H32ibsutDHrN7kWfcHTPRXj5gEm6sIQyswKJtxXNY-tokosdnTO/exec';
+// 幹事用パスコード（全端末で共通）
+const DEFAULT_PIN = '2026';
 
 function getGasUrl() {
   return localStorage.getItem('gas_url') || DEFAULT_GAS_URL;
@@ -133,7 +135,7 @@ function toast(msg) {
 
 /* ─── PIN Passcode Security ─── */
 function getPIN() {
-  return localStorage.getItem('kanji_pin') || '2026';
+  return localStorage.getItem('kanji_pin') || DEFAULT_PIN;
 }
 
 function openPINModal() {
