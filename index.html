@@ -33,29 +33,34 @@
       <button class="nav__burger" id="nav-burger" aria-label="メニューを開く">
         <span></span><span></span><span></span>
       </button>
-
-      <nav class="nav__menu" id="nav-menu">
-        <a href="#concept" class="nav__link" data-nav>コンセプト</a>
-        <a href="#villas" class="nav__link" data-nav>宿泊候補</a>
-        <a href="#bus" class="nav__link" data-nav>貸切バス</a>
-        <a href="#schedule" class="nav__link" data-nav>旅程</a>
-        <a href="#cost" class="nav__link" data-nav>費用</a>
-        <a href="#form" class="nav__link nav__link--cta" data-nav>参加申込</a>
-        <button id="open-pin-btn" class="nav__link nav__link--ghost" data-nav>🔒 幹事</button>
-      </nav>
     </div>
   </header>
+
+  <!-- ─── Fullscreen Menu ─── -->
+  <div class="fullscreen-menu" id="fullscreen-menu">
+    <div class="fullscreen-menu__bg"></div>
+    <nav class="fullscreen-menu__nav">
+      <a href="#concept" class="fullscreen-menu__link" data-nav><span class="fullscreen-menu__num">01</span><span class="fullscreen-menu__text">コンセプト</span></a>
+      <a href="#villas" class="fullscreen-menu__link" data-nav><span class="fullscreen-menu__num">02</span><span class="fullscreen-menu__text">宿泊候補</span></a>
+      <a href="#bus" class="fullscreen-menu__link" data-nav><span class="fullscreen-menu__num">03</span><span class="fullscreen-menu__text">貸切バス</span></a>
+      <a href="#schedule" class="fullscreen-menu__link" data-nav><span class="fullscreen-menu__num">04</span><span class="fullscreen-menu__text">旅程</span></a>
+      <a href="#cost" class="fullscreen-menu__link" data-nav><span class="fullscreen-menu__num">05</span><span class="fullscreen-menu__text">費用</span></a>
+      <a href="#form" class="fullscreen-menu__link fullscreen-menu__link--cta" data-nav><span class="fullscreen-menu__num">06</span><span class="fullscreen-menu__text">参加申込</span></a>
+      <button id="open-pin-btn" class="fullscreen-menu__link fullscreen-menu__link--ghost" data-nav><span class="fullscreen-menu__num">🔒</span><span class="fullscreen-menu__text">幹事</span></button>
+    </nav>
+    <div class="fullscreen-menu__footer">
+      <p class="fullscreen-menu__footer-text">大人の修学旅行 2026</p>
+    </div>
+  </div>
 
   <!-- ─── Hero ─── -->
   <section class="hero" id="hero" style="background-image: url('./images/resort_villa_sauna.png');">
     <canvas id="particle-canvas" class="hero__particles" aria-hidden="true"></canvas>
     <div class="hero__overlay"></div>
     <div class="hero__content">
-      <p class="hero__date">
-        <span class="hero__date-line"></span>
-        <span>2026.09.19 <em>sat</em> — 09.20 <em>sun</em></span>
-        <span class="hero__date-line"></span>
-      </p>
+      <div class="hero__badge">
+        <span class="hero__badge-text">2026.09.19 — 09.20</span>
+      </div>
       <h1 class="hero__title" id="hero-title">
         <span class="hero__title-line"><span class="char">あ</span><span class="char">の</span><span class="char">日</span><span class="char">の</span><span class="char">教</span><span class="char">室</span><span class="char">を</span></span>
         <span class="hero__title-line"><span class="char">飛</span><span class="char">び</span><span class="char">出</span><span class="char">し</span><span class="char">た</span><em class="char char--gold">先</em><em class="char char--gold">に</em><em class="char char--gold">。</em></span>
@@ -77,10 +82,15 @@
         <a href="#villas" class="btn btn--outline">ヴィラ候補を見る</a>
       </div>
     </div>
+    <div class="hero__scroll-hint">
+      <span class="hero__scroll-text">Scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
   </section>
 
   <!-- ─── Concept / Highlights ─── -->
   <section id="concept" class="sec">
+    <div class="sec__bg-text" aria-hidden="true">Experience</div>
     <div class="wrap">
       <header class="sec__head">
         <span class="sec__en">Experience</span>
@@ -130,6 +140,7 @@
 
   <!-- ─── Real Villa Candidates ─── -->
   <section id="villas" class="sec sec--dark">
+    <div class="sec__bg-text" aria-hidden="true">Accommodations</div>
     <div class="wrap">
       <header class="sec__head">
         <span class="sec__en">Accommodations</span>
@@ -138,61 +149,63 @@
         <div class="sec__bar"></div>
       </header>
 
-      <div class="villa-grid">
-        <!-- Villa 1 -->
-        <div class="villa-card reveal">
-          <div class="villa-card__tag">10〜12名向け・最高コスパ</div>
-          <h3 class="villa-card__title">BREEZE AWAJI GOSHIKIHAMA</h3>
-          <p class="villa-card__loc">📍 五色浜エリア（1棟貸切 / 最大12名）</p>
-          <ul class="villa-card__feats">
-            <li>オーシャンビューのルーフトップテラス</li>
-            <li>本格バレルサウナ（セルフロウリュ可）</li>
-            <li>大型Weber製BBQグリル完備</li>
-          </ul>
-          <div class="villa-card__price">ハイシーズン約 7.0万〜14.0万円/棟（1人あたり約7,000円〜）</div>
-          <a href="https://www.resort-glamping.com/accommodation/breeze-awaji-goshikihama/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
-        </div>
+      <div class="villa-scroll">
+        <div class="villa-grid">
+          <!-- Villa 1 -->
+          <div class="villa-card reveal">
+            <div class="villa-card__tag">10〜12名向け・最高コスパ</div>
+            <h3 class="villa-card__title">BREEZE AWAJI GOSHIKIHAMA</h3>
+            <p class="villa-card__loc">📍 五色浜エリア（1棟貸切 / 最大12名）</p>
+            <ul class="villa-card__feats">
+              <li>オーシャンビューのルーフトップテラス</li>
+              <li>本格バレルサウナ（セルフロウリュ可）</li>
+              <li>大型Weber製BBQグリル完備</li>
+            </ul>
+            <div class="villa-card__price">ハイシーズン約 7.0万〜14.0万円/棟（1人あたり約7,000円〜）</div>
+            <a href="https://www.resort-glamping.com/accommodation/breeze-awaji-goshikihama/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
+          </div>
 
-        <!-- Villa 2 -->
-        <div class="villa-card reveal reveal-delay-1">
-          <div class="villa-card__tag">10〜12名向け・夕日絶景</div>
-          <h3 class="villa-card__title">サンセットヴィラ淡路</h3>
-          <p class="villa-card__loc">📍 西海岸エリア（1棟貸切 / 最大12名）</p>
-          <ul class="villa-card__feats">
-            <li>屋外テラス＆ガスBBQグリル</li>
-            <li>本格プライベートサウナ</li>
-            <li>海を見渡す露天ジャグジー付き</li>
-          </ul>
-          <div class="villa-card__price">ハイシーズン約 6.0万〜12.0万円/棟（1人あたり約8,000円〜）</div>
-          <a href="https://yokitabi.net/sunset-villa-awaji/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
-        </div>
+          <!-- Villa 2 -->
+          <div class="villa-card reveal reveal-delay-1">
+            <div class="villa-card__tag">10〜12名向け・夕日絶景</div>
+            <h3 class="villa-card__title">サンセットヴィラ淡路</h3>
+            <p class="villa-card__loc">📍 西海岸エリア（1棟貸切 / 最大12名）</p>
+            <ul class="villa-card__feats">
+              <li>屋外テラス＆ガスBBQグリル</li>
+              <li>本格プライベートサウナ</li>
+              <li>海を見渡す露天ジャグジー付き</li>
+            </ul>
+            <div class="villa-card__price">ハイシーズン約 6.0万〜12.0万円/棟（1人あたり約8,000円〜）</div>
+            <a href="https://yokitabi.net/sunset-villa-awaji/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
+          </div>
 
-        <!-- Villa 3 -->
-        <div class="villa-card reveal reveal-delay-2">
-          <div class="villa-card__tag">8〜16名向け・ラグジュアリー</div>
-          <h3 class="villa-card__title">プライベートヴィラAWAJI ジェイアイランド</h3>
-          <p class="villa-card__loc">📍 岩屋エリア（300㎡超 大空間 / 最大16名）</p>
-          <ul class="villa-card__feats">
-            <li>専用プライベートプール＆バレルサウナ</li>
-            <li>広大なグラスガーデンBBQエリア</li>
-            <li>大人数でもゆったり過ごせる豪華リビング</li>
-          </ul>
-          <div class="villa-card__price">ハイシーズン約 12.0万〜22.0万円/棟（1人あたり約10,000円〜）</div>
-          <a href="https://www.villa-awaji-glamping.com/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
-        </div>
+          <!-- Villa 3 -->
+          <div class="villa-card reveal reveal-delay-2">
+            <div class="villa-card__tag">8〜16名向け・ラグジュアリー</div>
+            <h3 class="villa-card__title">プライベートヴィラAWAJI ジェイアイランド</h3>
+            <p class="villa-card__loc">📍 岩屋エリア（300㎡超 大空間 / 最大16名）</p>
+            <ul class="villa-card__feats">
+              <li>専用プライベートプール＆バレルサウナ</li>
+              <li>広大なグラスガーデンBBQエリア</li>
+              <li>大人数でもゆったり過ごせる豪華リビング</li>
+            </ul>
+            <div class="villa-card__price">ハイシーズン約 12.0万〜22.0万円/棟（1人あたり約10,000円〜）</div>
+            <a href="https://www.villa-awaji-glamping.com/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
+          </div>
 
-        <!-- Villa 4 -->
-        <div class="villa-card reveal reveal-delay-3">
-          <div class="villa-card__tag">15〜30名向け・複数棟手配</div>
-          <h3 class="villa-card__title">SolaVilla (そらヴィラ) 海テラス南あわじ</h3>
-          <p class="villa-card__loc">📍 南あわじエリア（全15棟 / 2〜5棟手配で大宴会）</p>
-          <ul class="villa-card__feats">
-            <li>全棟オーシャンフロントの大型テラス</li>
-            <li>全棟に露天風呂 / ジャグジー＆BBQグリル</li>
-            <li>15〜30名グループの分散＋テラス集合に最適</li>
-          </ul>
-          <div class="villa-card__price">ハイシーズン 1人あたり約12,000円〜20,000円</div>
-          <a href="https://www.solavilla.jp/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
+          <!-- Villa 4 -->
+          <div class="villa-card reveal reveal-delay-3">
+            <div class="villa-card__tag">15〜30名向け・複数棟手配</div>
+            <h3 class="villa-card__title">SolaVilla (そらヴィラ) 海テラス南あわじ</h3>
+            <p class="villa-card__loc">📍 南あわじエリア（全15棟 / 2〜5棟手配で大宴会）</p>
+            <ul class="villa-card__feats">
+              <li>全棟オーシャンフロントの大型テラス</li>
+              <li>全棟に露天風呂 / ジャグジー＆BBQグリル</li>
+              <li>15〜30名グループの分散＋テラス集合に最適</li>
+            </ul>
+            <div class="villa-card__price">ハイシーズン 1人あたり約12,000円〜20,000円</div>
+            <a href="https://www.solavilla.jp/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
+          </div>
         </div>
       </div>
     </div>
@@ -200,6 +213,7 @@
 
   <!-- ─── Bus Info ─── -->
   <section id="bus" class="sec">
+    <div class="sec__bg-text" aria-hidden="true">Transportation</div>
     <div class="wrap">
       <header class="sec__head">
         <span class="sec__en">Bus Transportation</span>
@@ -237,6 +251,7 @@
 
   <!-- ─── Schedule / 工程表 ─── -->
   <section id="schedule" class="sec sec--dark">
+    <div class="sec__bg-text" aria-hidden="true">Schedule</div>
     <div class="wrap">
       <header class="sec__head">
         <span class="sec__en">Schedule</span>
@@ -355,6 +370,7 @@
 
   <!-- ─── Packing List ─── -->
   <section class="sec">
+    <div class="sec__bg-text" aria-hidden="true">Packing</div>
     <div class="wrap">
       <header class="sec__head">
         <span class="sec__en">Packing</span>
@@ -375,6 +391,7 @@
 
   <!-- ─── Cost Calculator ─── -->
   <section id="cost" class="sec sec--dark">
+    <div class="sec__bg-text" aria-hidden="true">Cost</div>
     <div class="wrap">
       <header class="sec__head">
         <span class="sec__en">Cost Simulation</span>
@@ -419,6 +436,7 @@
 
   <!-- ─── RSVP Form ─── -->
   <section id="form" class="sec">
+    <div class="sec__bg-text" aria-hidden="true">RSVP</div>
     <div class="wrap">
       <header class="sec__head">
         <span class="sec__en">RSVP</span>

@@ -295,15 +295,17 @@ async function saveDBSettings() {
 /* ─── Hamburger Nav ─── */
 function initNav() {
   const burger = document.getElementById('nav-burger');
-  const menu = document.getElementById('nav-menu');
+  const menu = document.getElementById('fullscreen-menu');
   if (!burger || !menu) return;
   burger.addEventListener('click', () => {
     burger.classList.toggle('open');
     menu.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
   });
   menu.querySelectorAll('[data-nav]').forEach(l => l.addEventListener('click', () => {
     burger.classList.remove('open');
     menu.classList.remove('open');
+    document.body.style.overflow = '';
   }));
 }
 
@@ -481,5 +483,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initMouseStalker();
   initParticles();
   initTiltCards();
-  document.getElementById('open-pin-btn').addEventListener('click', openPINModal);
+  const pinBtn = document.getElementById('open-pin-btn');
+  if (pinBtn) pinBtn.addEventListener('click', openPINModal);
 });
