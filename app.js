@@ -4,6 +4,14 @@
 
 const TRIP_DATE = new Date('2026-09-19T10:00:00+09:00').getTime();
 
+/* ─── Global Configuration ─── */
+// 発行したGASのウェブアプリURLをここに設定すると、すべての端末で共有されます
+const DEFAULT_GAS_URL = '';
+
+function getGasUrl() {
+  return localStorage.getItem('gas_url') || DEFAULT_GAS_URL;
+}
+
 /* ─── Demo Data ─── */
 const DEMO = [
   { id:'d1', name:'山田 太郎', nickname:'やまちゃん (3-2)', contact:'yamada_line', attendance:'attending', drink:'beer', sauna:'hardcore', message:'楽しみ！車内ビール乾杯から参戦。', timestamp:'2026/08/01 10:30' },
@@ -16,9 +24,11 @@ const DEMO = [
 function getRSVPs() {
   const d = localStorage.getItem('adult_trip_rsvps');
   if (d === null) {
-    // First load ever: populate DEMO
-    localStorage.setItem('adult_trip_rsvps', JSON.stringify(DEMO));
-    return [...DEMO];
+    if (!getGasUrl()) {
+      localStorage.setItem('adult_trip_rsvps', JSON.stringify(DEMO));
+      return [...DEMO];
+    }
+    return [];
   }
   try {
     return JSON.parse(d) || [];
@@ -105,7 +115,7 @@ async function submitRSVP(e) {
   const list = getRSVPs(); list.unshift(r); saveRSVPs(list);
 
   // GAS sync
-  const gasUrl = localStorage.getItem('gas_url');
+  const gasUrl = getGasUrl();
   if (gasUrl) try { await fetch(gasUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(r) }); } catch(err) { console.warn('GAS:', err); }
 
   if (typeof confetti === 'function') confetti({ particleCount:70, spread:55, origin:{y:.7}, colors:['#c8a44e','#fff','#dcc06c'] });
@@ -150,7 +160,23 @@ function verifyPIN(e) {
 }
 
 /* ─── Admin Modal ─── */
-function openAdminModal()  { updateAdmin(); document.getElementById('admin-modal').classList.add('active'); }
+async function fetchGASRSVPs() {
+  const url = getGasUrl();
+  if (!url) return;
+  try {
+    const res = await fetch(url);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        saveRSVPs(data);
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to sync from GAS:', err);
+  }
+}
+
+async function openAdminModal()  { await fetchGASRSVPs(); updateAdmin(); document.getElementById('admin-modal').classList.add('active'); }
 function closeAdminModal() { document.getElementById('admin-modal').classList.remove('active'); }
 
 const DRINK = { beer:'ビール', highball:'ハイボール', sour:'サワー', wine:'ワイン/日本酒', non_alcohol:'ノンアル' };
@@ -210,7 +236,7 @@ function restoreDemoData() {
 
 /* ─── DB Settings ─── */
 function openDBModal()  {
-  document.getElementById('gas-url-input').value = localStorage.getItem('gas_url')||'';
+  document.getElementById('gas-url-input').value = getGasUrl();
   document.getElementById('new-pin-input').value = getPIN();
   document.getElementById('db-modal').classList.add('active');
 }
