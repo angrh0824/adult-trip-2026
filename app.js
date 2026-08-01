@@ -65,7 +65,9 @@ function updateCalculator() {
   // 12人以下: バスなし・サウナ付きヴィラ（サウナ付きは最大12名程度）
   // 13人以上: バスあり・サウナなし大型ヴィラ
   const useBus = c > 12;
-  const busCost = useBus ? (c <= 20 ? 220000 : 280000) : 0;
+  // レンタカー: 1台7人乗りで最大6名乗車 → 12人なら2台必要
+  const rentalCars = useBus ? 0 : Math.ceil(c / 6);
+  const busCost = useBus ? (c <= 20 ? 220000 : 280000) : rentalCars * 35000;
   const villaCost = useBus
     ? (c <= 16 ? 250000 : (c <= 24 ? 320000 : 400000))
     : (c <= 8 ? 150000 : 200000);
@@ -85,7 +87,7 @@ function updateCalculator() {
   const elMisc = document.getElementById('cost-misc-display');
   const elIns = document.getElementById('cost-ins-display');
 
-  if (elBus) elBus.textContent = useBus ? busCost.toLocaleString() + ' 円' : '不要（0円）';
+  if (elBus) elBus.textContent = useBus ? busCost.toLocaleString() + ' 円' : busCost.toLocaleString() + ' 円';
   if (elVilla) elVilla.textContent = villaCost.toLocaleString() + ' 円';
   if (elBbq) elBbq.textContent = bbqCost.toLocaleString() + ' 円';
   if (elMisc) elMisc.textContent = miscCost.toLocaleString() + ' 円';
@@ -95,7 +97,7 @@ function updateCalculator() {
   const elBusLabel = document.getElementById('cost-bus-label');
   const elVillaLabel = document.getElementById('cost-villa-label');
   const elNote = document.getElementById('calc-result-note');
-  if (elBusLabel) elBusLabel.textContent = useBus ? '貸切バス (高速代・運転手宿泊費込)' : 'レンタカー・マイカー (ガソリン代等)';
+  if (elBusLabel) elBusLabel.textContent = useBus ? '貸切バス (高速代・運転手宿泊費込)' : `レンタカー ${rentalCars}台 (ガソリン・高速代込)`;
   if (elVillaLabel) elVillaLabel.textContent = useBus ? '大型ヴィラ宿泊代 (ハイシーズン相場)' : 'サウナ付きヴィラ宿泊代 (ハイシーズン相場)';
   if (elNote) elNote.textContent = useBus
     ? '貸切バス / 大型ヴィラ / 特選BBQ・生ビール / 保険含む'
