@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大人の修学旅行 2026 | 大阪発 淡路島 1泊2日</title>
+  <meta name="description" content="中学の同級生が集う1泊2日の大人の修学旅行。大阪から貸切サロンバスで淡路島リゾートヴィラへ。サウナ・BBQ・大宴会。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Shippori+Mincho:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="./style.css?v=5">
+</head>
+<body>
+
+  <!-- ─── Nav ─── -->
+  <header class="nav" id="main-nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__brand">
+        <span class="nav__brand-en">Reunion Trip 2026</span>
+        <span class="nav__brand-jp">大人の修学旅行</span>
+      </a>
+
+      <button class="nav__burger" id="nav-burger" aria-label="メニューを開く">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav__menu" id="nav-menu">
+        <a href="#concept" class="nav__link" data-nav>コンセプト</a>
+        <a href="#villas" class="nav__link" data-nav>宿泊候補</a>
+        <a href="#bus" class="nav__link" data-nav>貸切バス</a>
+        <a href="#schedule" class="nav__link" data-nav>旅程</a>
+        <a href="#cost" class="nav__link" data-nav>費用</a>
+        <a href="#form" class="nav__link nav__link--cta" data-nav>参加申込</a>
+        <button id="open-pin-btn" class="nav__link nav__link--ghost" data-nav>🔒 幹事</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ─── Hero ─── -->
+  <section class="hero" style="background-image: url('./images/resort_villa_sauna.png');">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <p class="hero__date">
+        <span class="hero__date-line"></span>
+        <span>2026.09.19 <em>sat</em> — 09.20 <em>sun</em></span>
+        <span class="hero__date-line"></span>
+      </p>
+      <h1 class="hero__title">あの日の教室を<br>飛び出した先に。</h1>
+      <p class="hero__sub">大阪から回転サロンバスで淡路島へ。プライベートサウナとBBQ、<br class="hide-sp">中学の仲間と過ごす、大人だけの修学旅行。</p>
+
+      <div class="hero__countdown" id="countdown">
+        <div class="cd"><span class="cd__n" id="cd-days">00</span><span class="cd__l">days</span></div>
+        <div class="cd__sep">:</div>
+        <div class="cd"><span class="cd__n" id="cd-hours">00</span><span class="cd__l">hrs</span></div>
+        <div class="cd__sep">:</div>
+        <div class="cd"><span class="cd__n" id="cd-mins">00</span><span class="cd__l">min</span></div>
+        <div class="cd__sep">:</div>
+        <div class="cd"><span class="cd__n" id="cd-secs">00</span><span class="cd__l">sec</span></div>
+      </div>
+
+      <div class="hero__cta">
+        <a href="#form" class="btn btn--fill">参加可否を回答する</a>
+        <a href="#villas" class="btn btn--outline">ヴィラ候補を見る</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Concept / Highlights ─── -->
+  <section id="concept" class="sec">
+    <div class="wrap">
+      <header class="sec__head">
+        <span class="sec__en">Experience</span>
+        <h2 class="sec__jp">この旅で待っている体験</h2>
+        <div class="sec__bar"></div>
+      </header>
+
+      <div class="cards">
+        <article class="card">
+          <figure class="card__fig">
+            <img src="./images/chartered_bus_trip.png" alt="貸切バス" class="card__img" loading="lazy">
+            <span class="card__no">01</span>
+          </figure>
+          <div class="card__body">
+            <span class="card__cat">Transportation</span>
+            <h3 class="card__title">回転サロンシートで、<br>走る居酒屋。</h3>
+            <p class="card__text">後部座席が向かい合う回転サロンシート仕様の貸切バスを手配。冷えた生ビールで乾杯し、中学時代の思い出BGMを流しながら淡路島へ。</p>
+          </div>
+        </article>
+
+        <article class="card card--rev">
+          <figure class="card__fig">
+            <img src="./images/resort_villa_sauna.png" alt="サウナヴィラ" class="card__img" loading="lazy">
+            <span class="card__no">02</span>
+          </figure>
+          <div class="card__body">
+            <span class="card__cat">Sauna & Wellness</span>
+            <h3 class="card__title">オーシャンビューで、<br>ととのう。</h3>
+            <p class="card__text">専用バレルサウナでアロマ水セルフロウリュ。深めの水風呂から、海を望むインフィニティチェアで全員一緒に極上の「整い」体験。</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="card__fig">
+            <img src="./images/bbq_party_night.png" alt="BBQ宴会" class="card__img" loading="lazy">
+            <span class="card__no">03</span>
+          </figure>
+          <div class="card__body">
+            <span class="card__cat">Gastronomy & Night</span>
+            <h3 class="card__title">特選淡路牛と、<br>夜更かしの大宴会。</h3>
+            <p class="card__text">夕暮れのテラスで淡路牛と海鮮の炭火焼きBBQ。卓上生ビールサーバーを囲み、夜は卒アルを広げて大部屋で深夜トーク。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Real Villa Candidates ─── -->
+  <section id="villas" class="sec sec--dark">
+    <div class="wrap">
+      <header class="sec__head">
+        <span class="sec__en">Accommodations</span>
+        <h2 class="sec__jp">宿泊候補ヴィラ・ロケーション</h2>
+        <p class="sec__lead">サウナ＆BBQテラス完備！人数や希望に応じて決定する実在のリゾートヴィラ候補です。</p>
+        <div class="sec__bar"></div>
+      </header>
+
+      <div class="villa-grid">
+        <!-- Villa 1 -->
+        <div class="villa-card">
+          <div class="villa-card__tag">10〜12名向け・最高コスパ</div>
+          <h3 class="villa-card__title">BREEZE AWAJI GOSHIKIHAMA</h3>
+          <p class="villa-card__loc">📍 五色浜エリア（1棟貸切 / 最大12名）</p>
+          <ul class="villa-card__feats">
+            <li>オーシャンビューのルーフトップテラス</li>
+            <li>本格バレルサウナ（セルフロウリュ可）</li>
+            <li>大型Weber製BBQグリル完備</li>
+          </ul>
+          <div class="villa-card__price">ハイシーズン約 7.0万〜14.0万円/棟（1人あたり約7,000円〜）</div>
+          <a href="https://www.resort-glamping.com/accommodation/breeze-awaji-goshikihama/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
+        </div>
+
+        <!-- Villa 2 -->
+        <div class="villa-card">
+          <div class="villa-card__tag">10〜12名向け・夕日絶景</div>
+          <h3 class="villa-card__title">サンセットヴィラ淡路</h3>
+          <p class="villa-card__loc">📍 西海岸エリア（1棟貸切 / 最大12名）</p>
+          <ul class="villa-card__feats">
+            <li>屋外テラス＆ガスBBQグリル</li>
+            <li>本格プライベートサウナ</li>
+            <li>海を見渡す露天ジャグジー付き</li>
+          </ul>
+          <div class="villa-card__price">ハイシーズン約 6.0万〜12.0万円/棟（1人あたり約8,000円〜）</div>
+          <a href="https://yokitabi.net/sunset-villa-awaji/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
+        </div>
+
+        <!-- Villa 3 -->
+        <div class="villa-card">
+          <div class="villa-card__tag">8〜16名向け・ラグジュアリー</div>
+          <h3 class="villa-card__title">プライベートヴィラAWAJI ジェイアイランド</h3>
+          <p class="villa-card__loc">📍 岩屋エリア（300㎡超 大空間 / 最大16名）</p>
+          <ul class="villa-card__feats">
+            <li>専用プライベートプール＆バレルサウナ</li>
+            <li>広大なグラスガーデンBBQエリア</li>
+            <li>大人数でもゆったり過ごせる豪華リビング</li>
+          </ul>
+          <div class="villa-card__price">ハイシーズン約 12.0万〜22.0万円/棟（1人あたり約10,000円〜）</div>
+          <a href="https://www.villa-awaji-glamping.com/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
+        </div>
+
+        <!-- Villa 4 -->
+        <div class="villa-card">
+          <div class="villa-card__tag">15〜30名向け・複数棟手配</div>
+          <h3 class="villa-card__title">SolaVilla (そらヴィラ) 海テラス南あわじ</h3>
+          <p class="villa-card__loc">📍 南あわじエリア（全15棟 / 2〜5棟手配で大宴会）</p>
+          <ul class="villa-card__feats">
+            <li>全棟オーシャンフロントの大型テラス</li>
+            <li>全棟に露天風呂 / ジャグジー＆BBQグリル</li>
+            <li>15〜30名グループの分散＋テラス集合に最適</li>
+          </ul>
+          <div class="villa-card__price">ハイシーズン 1人あたり約12,000円〜20,000円</div>
+          <a href="https://www.solavilla.jp/" target="_blank" rel="noopener" class="villa-card__link">公式サイトを見る ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Bus Info ─── -->
+  <section id="bus" class="sec">
+    <div class="wrap">
+      <header class="sec__head">
+        <span class="sec__en">Bus Transportation</span>
+        <h2 class="sec__jp">大阪発着 貸切サロンバスのご案内</h2>
+        <p class="sec__lead">宴会特化！後部座席が対面になる回転サロンシートバスを手配します。</p>
+        <div class="sec__bar"></div>
+      </header>
+
+      <div class="bus-info-grid">
+        <div class="bus-box">
+          <h4 class="bus-box__h">🚍 中型サロンバス（20〜27名定員）</h4>
+          <p class="bus-box__p">15〜20名規模に最適。後部1〜2列が回転サロン仕様。移動中から冷えたビールで乾杯できます！</p>
+          <div class="bus-box__cost">トータル目安: <strong>約 16.5万円 〜 22.5万円</strong>（1人約8,000〜13,000円）</div>
+        </div>
+
+        <div class="bus-box">
+          <h4 class="bus-box__h">🚌 大型サロンバス（40〜49名定員）</h4>
+          <p class="bus-box__p">20〜30名規模や荷物が多い場合に最適。ゆったり空間＆大型冷蔵庫完備。</p>
+          <div class="bus-box__cost">トータル目安: <strong>約 20.5万円 〜 28.5万円</strong>（1人約8,000〜12,000円）</div>
+        </div>
+      </div>
+
+      <div class="bus-partners">
+        <h4 class="bus-partners__title">手配候補バス会社・相見積もりサービス</h4>
+        <div class="bus-partners__tags">
+          <a href="https://www.nihonkotsu.co.jp/bus/rental/" target="_blank" rel="noopener" class="bus-partner-btn">日本交通（関西最大手・安定運行）</a>
+          <a href="https://www.osakayasaka.com/" target="_blank" rel="noopener" class="bus-partner-btn">ヤサカ観光バス（回転サロン充実）</a>
+          <a href="https://alphaline-bus.com/" target="_blank" rel="noopener" class="bus-partner-btn">アルファライン（ビールサーバー対応）</a>
+          <a href="https://www.bus-trip.jp/" target="_blank" rel="noopener" class="bus-partner-btn">貸切バスの達人（一括相見積もり）</a>
+        </div>
+        <p class="bus-note">※運賃のほか、運転手宿泊費（約1万〜1.5万円）および高速往復代（約1.5万〜2.5万円）を含む実費計算済です。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Schedule / 工程表 ─── -->
+  <section id="schedule" class="sec sec--dark">
+    <div class="wrap">
+      <header class="sec__head">
+        <span class="sec__en">Schedule</span>
+        <h2 class="sec__jp">1泊2日の旅程</h2>
+        <div class="sec__bar"></div>
+      </header>
+
+      <div class="day-tabs">
+        <button class="day-tab active" onclick="switchDay(1)">
+          <span class="day-tab__d">Day 1</span>
+          <span class="day-tab__date">9/19 (土)</span>
+        </button>
+        <button class="day-tab" onclick="switchDay(2)">
+          <span class="day-tab__d">Day 2</span>
+          <span class="day-tab__date">9/20 (日)</span>
+        </button>
+      </div>
+
+      <ol id="timeline-day-1" class="tl">
+        <li class="tl__item">
+          <time class="tl__time">10:00</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">集合・出発</span>
+            <h4 class="tl__h">大阪（梅田/難波）集合・貸切バス出発</h4>
+            <p class="tl__p">サロンバスに乗車、冷えたドリンクで乾杯。車内は完全貸切のプライベート空間。</p>
+          </div>
+        </li>
+        <li class="tl__item">
+          <time class="tl__time">11:45</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">ドライブ＆ランチ</span>
+            <h4 class="tl__h">明石海峡大橋 ＆ 淡路島ランチ</h4>
+            <p class="tl__p">世界最大級の吊り橋を渡り淡路島上陸。海沿いレストランで生しらす丼やご当地グルメ。</p>
+          </div>
+        </li>
+        <li class="tl__item">
+          <time class="tl__time">14:30</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">チェックイン</span>
+            <h4 class="tl__h">リゾートヴィラ到着</h4>
+            <p class="tl__p">一棟貸切のオーシャンビューヴィラにチェックイン。広いリビングとプライベートデッキを開放。</p>
+          </div>
+        </li>
+        <li class="tl__item">
+          <time class="tl__time">15:30</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">サウナ＆スパ</span>
+            <h4 class="tl__h">バレルサウナ ＆ 外気浴セッション</h4>
+            <p class="tl__p">アロマ水セルフロウリュ → 冷水風呂 → オーシャンビューテラスでインフィニティチェア外気浴。</p>
+          </div>
+        </li>
+        <li class="tl__item">
+          <time class="tl__time">18:30</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">BBQディナー</span>
+            <h4 class="tl__h">特選淡路牛BBQ ＆ 生ビールサーバー</h4>
+            <p class="tl__p">絶品お肉と海鮮の炭火焼きBBQ。注ぎたての生ビールでテラスの大宴会が始まる。</p>
+          </div>
+        </li>
+        <li class="tl__item">
+          <time class="tl__time">22:00</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">ナイトセッション</span>
+            <h4 class="tl__h">卒アル観賞 ＆ 大部屋トーク</h4>
+            <p class="tl__p">中学時代の思い出話、卒アル、深夜のおつまみ。大部屋にお布団を並べて就寝。</p>
+          </div>
+        </li>
+      </ol>
+
+      <ol id="timeline-day-2" class="tl" style="display:none;">
+        <li class="tl__item">
+          <time class="tl__time">08:00</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">モーニング</span>
+            <h4 class="tl__h">朝サウナ ＆ 特製ブレックファスト</h4>
+            <p class="tl__p">朝サウナで二日酔いリセット。出汁の効いたスープと焼きたてパンの朝食。</p>
+          </div>
+        </li>
+        <li class="tl__item">
+          <time class="tl__time">10:30</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">チェックアウト</span>
+            <h4 class="tl__h">淡路島観光スポット巡り</h4>
+            <p class="tl__p">のじまスコーラ、淡路島クラフトサーカスなど話題のスポットをバスで巡る。</p>
+          </div>
+        </li>
+        <li class="tl__item">
+          <time class="tl__time">12:30</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">ランチ＆お土産</span>
+            <h4 class="tl__h">〆のご当地ランチ ＆ お土産タイム</h4>
+            <p class="tl__p">淡路島特産の甘い玉ねぎや地酒をお買い物。新鮮なお刺身ランチで旅の締め。</p>
+          </div>
+        </li>
+        <li class="tl__item">
+          <time class="tl__time">16:30</time>
+          <div class="tl__dot"></div>
+          <div class="tl__card">
+            <span class="tl__tag">解散</span>
+            <h4 class="tl__h">大阪到着 ＆ 集合写真撮影</h4>
+            <p class="tl__p">夕方に無事大阪市内に到着。バスの前で全員集合写真。また次回！</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─── Packing List ─── -->
+  <section class="sec">
+    <div class="wrap">
+      <header class="sec__head">
+        <span class="sec__en">Packing</span>
+        <h2 class="sec__jp">持ち物チェックリスト</h2>
+        <div class="sec__bar"></div>
+      </header>
+      <ul class="pack-list">
+        <li>水着・ラッシュガード（サウナ水風呂用）</li>
+        <li>着替え・パジャマ</li>
+        <li>タオル（ヴィラにもあり）</li>
+        <li>日焼け止め</li>
+        <li>常備薬・二日酔い対策</li>
+        <li>中学の卒アル（持っている人！）</li>
+        <li>テンション</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── Cost Calculator ─── -->
+  <section id="cost" class="sec sec--dark">
+    <div class="wrap">
+      <header class="sec__head">
+        <span class="sec__en">Cost Simulation</span>
+        <h2 class="sec__jp">会費シミュレーション</h2>
+        <p class="sec__lead">近畿運輸局基準のバス運賃・実在ヴィラのハイシーズン相場をもとに計算しています。</p>
+        <div class="sec__bar"></div>
+      </header>
+
+      <div class="calc">
+        <div class="calc__slider-wrap">
+          <label class="calc__slider-label">
+            <span>想定参加人数</span>
+            <strong id="headcount-display">18 名</strong>
+          </label>
+          <input type="range" id="headcount-slider" min="10" max="30" value="18" class="calc__range" oninput="updateCalculator()">
+        </div>
+
+        <div class="calc__result">
+          <span class="calc__result-sub">1人あたりの予想会費（全込み）</span>
+          <div id="cost-per-person-display" class="calc__price">25,800 <small>円</small></div>
+          <span class="calc__result-note">バス(高速・運転手泊含) / ヴィラ一棟宿泊 / 特選BBQ・生ビール / 保険含む</span>
+        </div>
+
+        <details class="calc__details" open>
+          <summary>予算内訳（合計: <span id="total-budget-display">464,400</span> 円）</summary>
+          <table class="calc__table">
+            <tr><td>大阪⇆淡路島 往復サロンバス (高速代・運転手宿泊費込)</td><td id="cost-bus-display">185,000 円</td></tr>
+            <tr><td>サウナ付きオーシャンヴィラ 宿泊代 (ハイシーズン相場)</td><td id="cost-villa-display">140,000 円</td></tr>
+            <tr><td>特選和牛＆海鮮BBQ食材 ＋ 生ビールサーバー＆酒類</td><td id="cost-bbq-display">108,000 円</td></tr>
+            <tr><td>朝食・軽食・ソフトドリンク・氷・雑費</td><td id="cost-misc-display">18,000 円</td></tr>
+            <tr><td>国内旅行傷害保険 ＆ 予備費</td><td id="cost-ins-display">13,400 円</td></tr>
+          </table>
+        </details>
+
+        <p class="calc__payment">
+          <strong>支払い方法:</strong> PayPay送金 / 銀行振込 / 当日現金。<br>
+          ※人気のサロンバス・ヴィラ確保のため、予約確定（6〜7月頃）後に幹事からLINEで集金案内します。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RSVP Form ─── -->
+  <section id="form" class="sec">
+    <div class="wrap">
+      <header class="sec__head">
+        <span class="sec__en">RSVP</span>
+        <h2 class="sec__jp">参加申込みフォーム</h2>
+        <p class="sec__lead">出欠と希望を教えてください。</p>
+        <div class="sec__bar"></div>
+      </header>
+
+      <form id="rsvp-form" class="rsvp" onsubmit="submitRSVP(event)">
+        <div class="rsvp__row2">
+          <div class="field">
+            <label for="user-name" class="field__label">お名前 <span class="field__req">*</span></label>
+            <input type="text" id="user-name" class="field__input" placeholder="山田 太郎" required>
+          </div>
+          <div class="field">
+            <label for="user-nickname" class="field__label">あだ名・組</label>
+            <input type="text" id="user-nickname" class="field__input" placeholder="やまちゃん (3年2組)">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="user-contact" class="field__label">連絡先（LINE / 電話 / メール）<span class="field__req">*</span></label>
+          <input type="text" id="user-contact" class="field__input" placeholder="yamada_line_id" required>
+        </div>
+
+        <div class="field">
+          <label class="field__label">参加ステータス <span class="field__req">*</span></label>
+          <div class="seg">
+            <label class="seg__item seg__item--active" onclick="selectRadio(this)">
+              <input type="radio" name="attendance" value="attending" checked>
+              <strong>参加する</strong><span>（絶対行く！）</span>
+            </label>
+            <label class="seg__item" onclick="selectRadio(this)">
+              <input type="radio" name="attendance" value="tentative">
+              <strong>調整中</strong><span>（追って連絡）</span>
+            </label>
+            <label class="seg__item" onclick="selectRadio(this)">
+              <input type="radio" name="attendance" value="absent">
+              <strong>不参加</strong><span>（今回は辞退）</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="rsvp__row2">
+          <div class="field">
+            <label for="drink-pref" class="field__label">お酒の好み</label>
+            <select id="drink-pref" class="field__input">
+              <option value="beer">ビール派</option>
+              <option value="highball">ハイボール派</option>
+              <option value="sour">サワー・チューハイ派</option>
+              <option value="wine">ワイン・日本酒派</option>
+              <option value="non_alcohol">ノンアル / ソフトドリンク</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sauna-pref" class="field__label">サウナのご希望</label>
+            <select id="sauna-pref" class="field__input">
+              <option value="hardcore">ガッツリ整いたい</option>
+              <option value="beginner">初心者だけど挑戦したい</option>
+              <option value="spectator">見守り / お風呂メイン</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="user-msg" class="field__label">幹事へのメッセージ・リクエスト</label>
+          <textarea id="user-msg" class="field__input field__textarea" rows="3" placeholder="聴きたい曲、食べ物の要望、アレルギーなど"></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn btn--fill btn--block">送信する</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ─── PIN Passcode Modal ─── -->
+  <div id="pin-modal" class="modal">
+    <div class="modal__card" style="max-width:380px;text-align:center">
+      <button class="modal__close" onclick="closePINModal()">✕</button>
+      <h3 class="modal__title">🔒 幹事認証</h3>
+      <p class="modal__sub">パスコードを入力してください</p>
+      
+      <form onsubmit="verifyPIN(event)">
+        <div class="field" style="margin-bottom:16px">
+          <input type="password" id="pin-input" class="field__input" placeholder="4桁の暗証番号" maxlength="6" style="text-align:center;font-size:1.4rem;letter-spacing:.3em" required>
+        </div>
+        <button type="submit" class="btn btn--fill btn--block">認証して開く</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ─── Admin Modal ─── -->
+  <div id="admin-modal" class="modal">
+    <div class="modal__card">
+      <button class="modal__close" onclick="closeAdminModal()">✕</button>
+      <h3 class="modal__title">幹事専用ダッシュボード</h3>
+      <p class="modal__sub">回答集計・一覧データ・CSV出力・DB設定</p>
+
+      <div class="stats">
+        <div class="stat"><span class="stat__l">参加</span><span id="stat-attending" class="stat__n stat__n--g">0 名</span></div>
+        <div class="stat"><span class="stat__l">調整中</span><span id="stat-tentative" class="stat__n stat__n--y">0 名</span></div>
+        <div class="stat"><span class="stat__l">不参加</span><span id="stat-absent" class="stat__n stat__n--r">0 名</span></div>
+        <div class="stat"><span class="stat__l">見込み集金</span><span id="stat-collected" class="stat__n">0 円</span></div>
+      </div>
+
+      <div class="modal__bar">
+        <span>回答一覧 (<span id="total-response-count">0</span>件)</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="exportCSV()" class="btn btn--fill btn--sm">CSV出力</button>
+          <button onclick="openDBModal()" class="btn btn--outline btn--sm">⚙ DB同期設定</button>
+          <button onclick="clearDataAll()" class="btn btn--outline btn--sm" style="color:var(--c-red);border-color:rgba(217,93,93,.3)">全消去</button>
+          <button onclick="restoreDemoData()" class="btn btn--ghost btn--sm" style="font-size:.72rem">サンプル復元</button>
+        </div>
+      </div>
+
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>氏名</th><th>状況</th><th>連絡先</th><th>お酒</th><th>サウナ</th><th>メッセージ</th><th>日時</th></tr></thead>
+          <tbody id="admin-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DB Modal ─── -->
+  <div id="db-modal" class="modal">
+    <div class="modal__card">
+      <button class="modal__close" onclick="closeDBModal()">✕</button>
+      <h3 class="modal__title">⚙ DB同期設定</h3>
+      <p class="modal__sub">Googleスプレッドシート（GAS）等への自動同期設定</p>
+
+      <div class="db-section">
+        <h4>Google Apps Script (GAS)</h4>
+        <p>スプレッドシートの「拡張機能」➔「Apps Script」に以下を貼り付けてデプロイし、URLを入力。</p>
+        <pre class="code-box">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([new Date(), data.name, data.nickname,
+    data.contact, data.attendance, data.drink,
+    data.sauna, data.message]);
+  return ContentService.createTextOutput(
+    JSON.stringify({"result":"success"})
+  ).setMimeType(ContentService.MimeType.JSON);
+}</pre>
+        <label class="field__label">GAS Web App URL</label>
+        <input type="text" id="gas-url-input" class="field__input" placeholder="https://script.google.com/macros/s/.../exec">
+      </div>
+
+      <div class="db-section">
+        <h4>幹事パスコード変更</h4>
+        <label class="field__label">新しい暗証番号（デフォルト: 2026）</label>
+        <input type="text" id="new-pin-input" class="field__input" placeholder="例: 1234">
+      </div>
+
+      <button onclick="saveDBSettings()" class="btn btn--fill btn--block" style="margin-top:20px">保存する</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"><span id="toast-msg"></span></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer__en">Reunion Trip 2026</p>
+    <p class="footer__jp">大人の修学旅行 実行委員会</p>
+  </footer>
+
+  <script src="./app.js?v=5"></script>
+</body>
+</html>
