@@ -142,6 +142,8 @@ function openPINModal() {
   document.getElementById('pin-input').value = '';
   document.getElementById('pin-modal').classList.add('active');
   setTimeout(() => document.getElementById('pin-input').focus(), 200);
+  // 他端末でPINが変更された可能性に備え、背景で最新PINを取得
+  fetchGASRSVPs();
 }
 
 function closePINModal() {
@@ -170,8 +172,15 @@ async function fetchGASRSVPs() {
     const res = await fetch(fetchUrl);
     if (res.ok) {
       const data = await res.json();
-      if (Array.isArray(data)) {
-        saveRSVPs(data);
+      if (data && typeof data === 'object') {
+        if (data.pin) {
+          localStorage.setItem('kanji_pin', String(data.pin));
+        }
+        if (Array.isArray(data.rsvps)) {
+          saveRSVPs(data.rsvps);
+        } else if (Array.isArray(data)) {
+          saveRSVPs(data);
+        }
       }
     }
   } catch (err) {
@@ -256,16 +265,30 @@ function openDBModal()  {
 }
 function closeDBModal() { document.getElementById('db-modal').classList.remove('active'); }
 
-function saveDBSettings() {
+async function saveDBSettings() {
   const g = document.getElementById('gas-url-input').value.trim();
   const np = document.getElementById('new-pin-input').value.trim();
 
   g ? localStorage.setItem('gas_url',g) : localStorage.removeItem('gas_url');
   if (np && np.length >= 4) {
     localStorage.setItem('kanji_pin', np);
+    // GAS側へ新PINを共有・同期
+    const gasUrl = getGasUrl();
+    if (gasUrl) {
+      try {
+        await fetch(gasUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'update_pin', pin: np })
+        });
+      } catch(err) {
+        console.warn('PIN GAS sync error:', err);
+      }
+    }
   }
 
-  toast('設定を保存しました。');
+  toast('設定とパスコードを保存・全端末同期しました。');
   closeDBModal();
 }
 
