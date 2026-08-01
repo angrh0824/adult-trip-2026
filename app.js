@@ -159,12 +159,13 @@ function verifyPIN(e) {
   }
 }
 
-/* ─── Admin Modal ─── */
+/* ─── Admin Modal & Multi-device Sync ─── */
 async function fetchGASRSVPs() {
   const url = getGasUrl();
   if (!url) return;
   try {
-    const res = await fetch(url);
+    const fetchUrl = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+    const res = await fetch(fetchUrl);
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data)) {
@@ -176,7 +177,12 @@ async function fetchGASRSVPs() {
   }
 }
 
-async function openAdminModal()  { await fetchGASRSVPs(); updateAdmin(); document.getElementById('admin-modal').classList.add('active'); }
+async function openAdminModal()  {
+  toast('🔄 データベースを同期中…');
+  await fetchGASRSVPs();
+  updateAdmin();
+  document.getElementById('admin-modal').classList.add('active');
+}
 function closeAdminModal() { document.getElementById('admin-modal').classList.remove('active'); }
 
 const DRINK = { beer:'ビール', highball:'ハイボール', sour:'サワー', wine:'ワイン/日本酒', non_alcohol:'ノンアル' };
@@ -187,11 +193,17 @@ function updateAdmin() {
   tbody.innerHTML = '';
   let a=0, t=0, ab=0;
   list.forEach(r => {
-    if (r.attendance==='attending') a++; else if (r.attendance==='tentative') t++; else ab++;
-    const bc = r.attendance==='attending'?'badge--g':r.attendance==='tentative'?'badge--y':'badge--r';
-    const bl = r.attendance==='attending'?'参加':r.attendance==='tentative'?'調整中':'不参加';
+    const att = (r.attendance || '').trim();
+    const isAttending = att === 'attending' || att === '参加' || att === '参加する';
+    const isTentative = att === 'tentative' || att === '調整中';
+    const isAbsent = att === 'absent' || att === '不参加';
+
+    if (isAttending) a++; else if (isTentative) t++; else ab++;
+    const bc = isAttending ? 'badge--g' : (isTentative ? 'badge--y' : 'badge--r');
+    const bl = isAttending ? '参加' : (isTentative ? '調整中' : '不参加');
+
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td><strong>${esc(r.name)}</strong><br><small style="color:var(--c-txt3)">${esc(r.nickname||'')}</small></td><td><span class="badge ${bc}">${bl}</span></td><td>${esc(r.contact)}</td><td>${DRINK[r.drink]||r.drink}</td><td>${SAUNA[r.sauna]||r.sauna}</td><td style="max-width:160px;font-size:.78rem;color:var(--c-txt2)">${esc(r.message||'')}</td><td style="font-size:.72rem;color:var(--c-txt3)">${r.timestamp}</td>`;
+    tr.innerHTML = `<td><strong>${esc(r.name)}</strong><br><small style="color:var(--c-txt3)">${esc(r.nickname||'')}</small></td><td><span class="badge ${bc}">${bl}</span></td><td>${esc(r.contact)}</td><td>${DRINK[r.drink]||esc(r.drink)||'-'}</td><td>${SAUNA[r.sauna]||esc(r.sauna)||'-'}</td><td style="max-width:160px;font-size:.78rem;color:var(--c-txt2)">${esc(r.message||'')}</td><td style="font-size:.72rem;color:var(--c-txt3)">${esc(r.timestamp||'')}</td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('stat-attending').textContent  = a + ' 名';
