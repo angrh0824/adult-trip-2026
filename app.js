@@ -6,7 +6,7 @@ const TRIP_DATE = new Date('2026-09-19T10:00:00+09:00').getTime();
 
 /* ─── Global Configuration ─── */
 // 発行したGASのウェブアプリURLをここに設定すると、すべての端末で共有されます
-const DEFAULT_GAS_URL = '';
+const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwqlvTGh9oJ7fUM7H32ibsutDHrN7kWfcHTPRXj5gEm6sIQyswKJtxXNY-tokosdnTO/exec';
 
 function getGasUrl() {
   return localStorage.getItem('gas_url') || DEFAULT_GAS_URL;
