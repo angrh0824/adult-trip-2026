@@ -400,7 +400,7 @@ function initParticles() {
   if (!hero) return;
 
   let W, H, particles = [];
-  const COUNT = 60;
+  const COUNT = 80;
 
   function resize() {
     W = canvas.width = hero.offsetWidth;
@@ -458,8 +458,8 @@ function initTiltCards() {
       const y = e.clientY - rect.top;
       const cx = rect.width / 2;
       const cy = rect.height / 2;
-      const rx = ((y - cy) / cy) * -6;
-      const ry = ((x - cx) / cx) * 6;
+      const rx = ((y - cy) / cy) * -8;
+      const ry = ((x - cx) / cx) * 8;
 
       card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
       card.style.setProperty('--mx', x + 'px');
