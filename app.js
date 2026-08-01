@@ -334,11 +334,152 @@ function initScrollEffects() {
   }
 }
 
+/* ─── Scroll Progress Bar ─── */
+function initScrollProgress() {
+  const bar = document.getElementById('scroll-progress');
+  if (!bar) return;
+  const onScroll = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+/* ─── Mouse Stalker ─── */
+function initMouseStalker() {
+  const stalker = document.getElementById('mouse-stalker');
+  const dot = document.getElementById('mouse-stalker-dot');
+  if (!stalker || !dot) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  let mx = innerWidth / 2, my = innerHeight / 2;
+  let sx = mx, sy = my;
+  let dx = mx, dy = my;
+
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  });
+
+  // Smooth follow animation
+  (function loop() {
+    sx += (mx - sx) * 0.12;
+    sy += (my - sy) * 0.12;
+    dx += (mx - dx) * 0.35;
+    dy += (my - dy) * 0.35;
+    stalker.style.left = sx + 'px';
+    stalker.style.top = sy + 'px';
+    requestAnimationFrame(loop);
+  })();
+
+  // Hover detection on interactive elements
+  const interactive = 'a, button, .btn, .card, .villa-card, .seg__item, .day-tab, input, select, textarea, summary';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(interactive)) {
+      stalker.classList.add('hovering');
+      dot.classList.add('hovering');
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(interactive)) {
+      stalker.classList.remove('hovering');
+      dot.classList.remove('hovering');
+    }
+  });
+}
+
+/* ─── Hero Particle Canvas ─── */
+function initParticles() {
+  const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const hero = document.getElementById('hero');
+  if (!hero) return;
+
+  let W, H, particles = [];
+  const COUNT = 60;
+
+  function resize() {
+    W = canvas.width = hero.offsetWidth;
+    H = canvas.height = hero.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor() {
+      this.reset(true);
+    }
+    reset(init) {
+      this.x = Math.random() * W;
+      this.y = init ? Math.random() * H : -10;
+      this.r = Math.random() * 2 + 0.5;
+      this.speed = Math.random() * 0.6 + 0.2;
+      this.alpha = Math.random() * 0.5 + 0.1;
+      this.drift = (Math.random() - 0.5) * 0.3;
+      this.gold = Math.random() > 0.5;
+    }
+    update() {
+      this.y -= this.speed;
+      this.x += this.drift;
+      if (this.y < -10) this.reset(false);
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = this.gold
+        ? `rgba(212,175,94,${this.alpha})`
+        : `rgba(255,255,255,${this.alpha * 0.6})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+
+  (function animate() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+  })();
+}
+
+/* ─── 3D Tilt Cards ─── */
+function initTiltCards() {
+  const cards = document.querySelectorAll('.card, .villa-card');
+  if (!cards.length || window.matchMedia('(hover: none)').matches) return;
+
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rx = ((y - cy) / cy) * -6;
+      const ry = ((x - cx) / cx) * 6;
+
+      card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+      card.style.setProperty('--mx', x + 'px');
+      card.style.setProperty('--my', y + 'px');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+
 /* ─── Init ─── */
 document.addEventListener('DOMContentLoaded', () => {
   tick(); setInterval(tick, 1000);
   updateCalculator();
   initNav();
   initScrollEffects();
+  initScrollProgress();
+  initMouseStalker();
+  initParticles();
+  initTiltCards();
   document.getElementById('open-pin-btn').addEventListener('click', openPINModal);
 });

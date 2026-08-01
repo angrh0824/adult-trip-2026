@@ -15,6 +15,13 @@
 </head>
 <body>
 
+  <!-- ─── Scroll Progress Bar ─── -->
+  <div id="scroll-progress" class="scroll-progress"></div>
+
+  <!-- ─── Mouse Stalker ─── -->
+  <div id="mouse-stalker" class="mouse-stalker" aria-hidden="true"></div>
+  <div id="mouse-stalker-dot" class="mouse-stalker-dot" aria-hidden="true"></div>
+
   <!-- ─── Nav ─── -->
   <header class="nav" id="main-nav">
     <div class="nav__inner">
@@ -40,7 +47,8 @@
   </header>
 
   <!-- ─── Hero ─── -->
-  <section class="hero" style="background-image: url('./images/resort_villa_sauna.png');">
+  <section class="hero" id="hero" style="background-image: url('./images/resort_villa_sauna.png');">
+    <canvas id="particle-canvas" class="hero__particles" aria-hidden="true"></canvas>
     <div class="hero__overlay"></div>
     <div class="hero__content">
       <p class="hero__date">
@@ -48,7 +56,10 @@
         <span>2026.09.19 <em>sat</em> — 09.20 <em>sun</em></span>
         <span class="hero__date-line"></span>
       </p>
-      <h1 class="hero__title">あの日の教室を<br>飛び出した<em>先に。</em></h1>
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__title-line"><span class="char">あ</span><span class="char">の</span><span class="char">日</span><span class="char">の</span><span class="char">教</span><span class="char">室</span><span class="char">を</span></span>
+        <span class="hero__title-line"><span class="char">飛</span><span class="char">び</span><span class="char">出</span><span class="char">し</span><span class="char">た</span><em class="char char--gold">先</em><em class="char char--gold">に</em><em class="char char--gold">。</em></span>
+      </h1>
       <p class="hero__sub">大阪から回転サロンバスで淡路島へ。プライベートサウナとBBQ、<br class="hide-sp">中学の仲間と過ごす、大人だけの修学旅行。</p>
 
       <div class="hero__countdown" id="countdown">
