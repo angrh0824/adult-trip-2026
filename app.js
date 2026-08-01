@@ -490,6 +490,66 @@ function initTiltCards() {
   });
 }
 
+/* ─── Villa Horizontal Scroll (PC: wheel + drag) ─── */
+function initVillaScroll() {
+  const scroller = document.querySelector('.villa-scroll');
+  if (!scroller) return;
+
+  // マウスホイールで横スクロール（PCのみ）
+  scroller.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      e.preventDefault();
+      scroller.scrollLeft += e.deltaY;
+    }
+  }, { passive: false });
+
+  // ドラッグで横スクロール
+  let isDown = false;
+  let startX = 0;
+  let startScrollLeft = 0;
+  let moved = false;
+
+  scroller.addEventListener('mousedown', (e) => {
+    // リンクやボタン上でのドラッグ開始は無視（クリックを妨げない）
+    if (e.target.closest('a, button')) return;
+    isDown = true;
+    moved = false;
+    startX = e.pageX;
+    startScrollLeft = scroller.scrollLeft;
+    scroller.classList.add('dragging');
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    const dx = e.pageX - startX;
+    if (Math.abs(dx) > 5) moved = true;
+    scroller.scrollLeft = startScrollLeft - dx;
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isDown) return;
+    isDown = false;
+    scroller.classList.remove('dragging');
+    // ドラッグ中にクリックが発生しないよう、移動した場合はクリックを抑止
+    if (moved) {
+      const suppress = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        document.removeEventListener('click', suppress, true);
+      };
+      document.addEventListener('click', suppress, true);
+    }
+  });
+
+  // マウスがスクローラーから離れた場合もドラッグ解除
+  scroller.addEventListener('mouseleave', () => {
+    if (isDown) {
+      isDown = false;
+      scroller.classList.remove('dragging');
+    }
+  });
+}
+
 /* ─── Init ─── */
 document.addEventListener('DOMContentLoaded', () => {
   tick(); setInterval(tick, 1000);
@@ -500,6 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMouseStalker();
   initParticles();
   initTiltCards();
+  initVillaScroll();
   const pinBtn = document.getElementById('open-pin-btn');
   if (pinBtn) pinBtn.addEventListener('click', openPINModal);
 });
