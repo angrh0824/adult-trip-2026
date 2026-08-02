@@ -249,15 +249,23 @@ function openPINModal() {
 
 function closePINModal() {
   document.getElementById('pin-modal').classList.remove('active');
+  const burger = document.getElementById('nav-burger');
+  const menu = document.getElementById('fullscreen-menu');
+  if (burger) burger.classList.remove('open');
+  if (menu) menu.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 function verifyPIN(e) {
   e.preventDefault();
+  if (document.activeElement) document.activeElement.blur();
   const inputPin = document.getElementById('pin-input').value.trim();
   if (inputPin === getPIN()) {
     closePINModal();
-    openAdminModal();
     toast('幹事認証に成功しました。');
+    setTimeout(() => {
+      openAdminModal();
+    }, 100);
   } else {
     toast('❌ パスコードが違います');
     document.getElementById('pin-input').value = '';
@@ -269,33 +277,69 @@ async function fetchGASRSVPs() {
   const url = getGasUrl();
   if (!url) return;
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout
     const fetchUrl = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
-    const res = await fetch(fetchUrl);
+    const res = await fetch(fetchUrl, { signal: controller.signal });
+    clearTimeout(timeoutId);
     if (res.ok) {
-      const data = await res.json();
+      const text = await res.text();
+      let data = null;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        console.error('GAS response is not JSON (likely permission error):', text);
+        toast('⚠️ GASへのアクセス権限エラー。「アクセスできるユーザー: 全員」に設定されているか確認してください。');
+        return;
+      }
       if (data && typeof data === 'object') {
         if (data.pin) {
           localStorage.setItem('kanji_pin', String(data.pin));
         }
-        if (Array.isArray(data.rsvps)) {
-          saveRSVPs(data.rsvps);
-        } else if (Array.isArray(data)) {
-          saveRSVPs(data);
+        let list = null;
+        if (Array.isArray(data.rsvps)) list = data.rsvps;
+        else if (Array.isArray(data.data)) list = data.data;
+        else if (Array.isArray(data.rows)) list = data.rows;
+        else if (Array.isArray(data)) list = data;
+
+        if (list) {
+          saveRSVPs(list);
+          if (list.length === 0) {
+            toast('ℹ️ スプレッドシートの2行目以降にデータがありません（0件）。');
+          } else {
+            toast(`✅ ${list.length}件のデータを同期しました！`);
+          }
         }
       }
+    } else {
+      toast(`⚠️ GAS同期失敗 (HTTP ${res.status})`);
     }
   } catch (err) {
     console.warn('Failed to sync from GAS:', err);
+    toast('⚠️ 通信エラー: GASのURLまたは権限を確認してください。');
   }
 }
 
-async function openAdminModal()  {
-  toast('🔄 データベースを同期中…');
-  await fetchGASRSVPs();
-  updateAdmin();
-  document.getElementById('admin-modal').classList.add('active');
+function openAdminModal() {
+  try {
+    updateAdmin();
+  } catch(err) {
+    console.warn('updateAdmin error:', err);
+  }
+  const adminModal = document.getElementById('admin-modal');
+  if (adminModal) {
+    adminModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  fetchGASRSVPs().then(() => {
+    try { updateAdmin(); } catch(e) {}
+  });
 }
-function closeAdminModal() { document.getElementById('admin-modal').classList.remove('active'); }
+function closeAdminModal() {
+  const adminModal = document.getElementById('admin-modal');
+  if (adminModal) adminModal.classList.remove('active');
+  document.body.style.overflow = '';
+}
 
 const DRINK = { beer:'ビール', highball:'ハイボール', sour:'サワー', wine:'ワイン/日本酒', non_alcohol:'ノンアル' };
 const SAUNA = { hardcore:'ガッツリ', beginner:'初心者', spectator:'見守り' };
