@@ -320,6 +320,12 @@ async function fetchGASRSVPs() {
   }
 }
 
+async function manualSyncGAS() {
+  toast('🔄 スプレッドシートから手動読み込み中…');
+  await fetchGASRSVPs();
+  updateAdmin();
+}
+
 function openAdminModal() {
   try {
     updateAdmin();
@@ -346,13 +352,14 @@ const SAUNA = { hardcore:'ガッツリ', beginner:'初心者', spectator:'見守
 
 function updateAdmin() {
   const list = getRSVPs(), tbody = document.getElementById('admin-table-body');
+  if (!tbody) return;
   tbody.innerHTML = '';
   let a=0, t=0, ab=0;
   list.forEach(r => {
-    const att = (r.attendance || '').trim();
-    const isAttending = att === 'attending' || att === '参加' || att === '参加する';
-    const isTentative = att === 'tentative' || att === '調整中';
-    const isAbsent = att === 'absent' || att === '不参加';
+    const att = (r.attendance || '').toLowerCase().trim();
+    const isAttending = att === 'attending' || att.includes('参加') || att.includes('出席') || att.includes('〇') || att.includes('○') || att === 'yes' || att === 'ok';
+    const isTentative = att === 'tentative' || att.includes('調整') || att.includes('保留') || att.includes('△') || att === 'maybe';
+    const isAbsent = att === 'absent' || att.includes('不参加') || att.includes('欠席') || att.includes('✕') || att.includes('×') || att === 'no';
 
     if (isAttending) a++; else if (isTentative) t++; else ab++;
     const bc = isAttending ? 'badge--g' : (isTentative ? 'badge--y' : 'badge--r');
@@ -362,13 +369,21 @@ function updateAdmin() {
     tr.innerHTML = `<td><strong>${esc(r.name)}</strong><br><small style="color:var(--c-txt3)">${esc(r.nickname||'')}</small></td><td><span class="badge ${bc}">${bl}</span></td><td>${esc(r.contact)}</td><td>${DRINK[r.drink]||esc(r.drink)||'-'}</td><td>${SAUNA[r.sauna]||esc(r.sauna)||'-'}</td><td style="max-width:160px;font-size:.78rem;color:var(--c-txt2)">${esc(r.message||'')}</td><td style="font-size:.72rem;color:var(--c-txt3)">${esc(r.timestamp||'')}</td>`;
     tbody.appendChild(tr);
   });
-  document.getElementById('stat-attending').textContent  = a + ' 名';
-  document.getElementById('stat-tentative').textContent  = t + ' 名';
-  document.getElementById('stat-absent').textContent     = ab + ' 名';
-  const sv = +document.getElementById('headcount-slider').value;
+  const elAtt = document.getElementById('stat-attending');
+  const elTen = document.getElementById('stat-tentative');
+  const elAbs = document.getElementById('stat-absent');
+  const elCol = document.getElementById('stat-collected');
+  const elTot = document.getElementById('total-response-count');
+
+  if (elAtt) elAtt.textContent = a + ' 名';
+  if (elTen) elTen.textContent = t + ' 名';
+  if (elAbs) elAbs.textContent = ab + ' 名';
+  
+  const slider = document.getElementById('headcount-slider');
+  const sv = slider ? +slider.value : 18;
   const cpp = Math.ceil((345000 + 8400*sv)/sv/100)*100;
-  document.getElementById('stat-collected').textContent  = (a*cpp).toLocaleString() + ' 円';
-  document.getElementById('total-response-count').textContent = list.length;
+  if (elCol) elCol.textContent = (a*cpp).toLocaleString() + ' 円';
+  if (elTot) elTot.textContent = list.length;
 }
 
 function esc(s) { return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
