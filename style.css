@@ -852,18 +852,16 @@ body::after{
   font-family: var(--ff-sans);
   opacity: .85;
   line-height: 1.7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
 }
 .selection-hint svg {
   color: var(--c-gold);
-  flex-shrink: 0;
+  vertical-align: -2px;
+  margin-right: 4px;
 }
 .selection-hint strong {
   color: var(--c-gold);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 /* Calculator selected indicator */
@@ -1012,15 +1010,23 @@ body::after{
   background: rgba(255,255,255,.01);
 }
 .marquee__track {
-  display: inline-block;
+  display: flex;
+  width: max-content;
   animation: marqueeScroll 30s linear infinite;
   font-family: var(--ff-en);
   font-size: 1.2rem;
   letter-spacing: .2em;
   color: var(--c-txt3);
   font-style: italic;
+  will-change: transform;
 }
-.marquee__track span {
+.marquee__group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.marquee__group span {
   margin: 0 24px;
   color: var(--c-gold);
 }
