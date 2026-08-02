@@ -357,11 +357,14 @@ function updateAdmin() {
   let a=0, t=0, ab=0;
   list.forEach(r => {
     const att = (r.attendance || '').toLowerCase().trim();
-    const isAttending = att === 'attending' || att.includes('参加') || att.includes('出席') || att.includes('〇') || att.includes('○') || att === 'yes' || att === 'ok';
-    const isTentative = att === 'tentative' || att.includes('調整') || att.includes('保留') || att.includes('△') || att === 'maybe';
-    const isAbsent = att === 'absent' || att.includes('不参加') || att.includes('欠席') || att.includes('✕') || att.includes('×') || att === 'no';
+    const isAbsent = att === 'absent' || att.includes('不参加') || att.includes('欠席') || att.includes('✕') || att.includes('×') || att === 'no' || att.includes('無理') || att.includes('不可');
+    const isTentative = att === 'tentative' || att.includes('調整') || att.includes('保留') || att.includes('△') || att === 'maybe' || att.includes('未定');
+    const isAttending = !isAbsent && !isTentative;
 
-    if (isAttending) a++; else if (isTentative) t++; else ab++;
+    if (isAttending) a++;
+    else if (isTentative) t++;
+    else if (isAbsent) ab++;
+
     const bc = isAttending ? 'badge--g' : (isTentative ? 'badge--y' : 'badge--r');
     const bl = isAttending ? '参加' : (isTentative ? '調整中' : '不参加');
 
