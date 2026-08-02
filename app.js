@@ -303,12 +303,40 @@ async function fetchGASRSVPs() {
         else if (Array.isArray(data)) list = data;
 
         if (list) {
-          saveRSVPs(list);
-          if (list.length === 0) {
+          // 各レコードのフィールド名を正規化（大文字小文字・別名対応）
+          const normalized = list.map(r => {
+            if (!r || typeof r !== 'object') return r;
+            const out = {};
+            const keyMap = {
+              'timestamp': ['timestamp','date','datetime','日時','time'],
+              'name': ['name','氏名','名前','お名前','fullname','full_name'],
+              'nickname': ['nickname','あだ名','ニックネーム','nick_name','nick'],
+              'contact': ['contact','連絡先','電話','メール','line','email','phone'],
+              'attendance': ['attendance','出欠','ステータス','status','参加','参加状況'],
+              'drink': ['drink','お酒','飲み物','drink_pref','drink-pref'],
+              'sauna': ['sauna','サウナ','サウナ希望','sauna_pref','sauna-pref'],
+              'message': ['message','メッセージ','コメント','msg','備考','request']
+            };
+            for (const [key, aliases] of Object.entries(keyMap)) {
+              for (const a of aliases) {
+                if (r[a] !== undefined && r[a] !== null) {
+                  out[key] = r[a];
+                  break;
+                }
+              }
+              if (out[key] === undefined) out[key] = '';
+            }
+            return out;
+          });
+          saveRSVPs(normalized);
+          if (normalized.length === 0) {
             toast('ℹ️ スプレッドシートの2行目以降にデータがありません（0件）。');
           } else {
-            toast(`✅ ${list.length}件のデータを同期しました！`);
+            toast(`✅ ${normalized.length}件のデータを同期しました！`);
           }
+        } else {
+          console.warn('GAS response has no rsvps/data/rows array:', data);
+          toast('⚠️ GASのレスポンスにデータ配列がありません。GASコードを確認してください。');
         }
       }
     } else {
@@ -354,19 +382,22 @@ function updateAdmin() {
   const list = getRSVPs(), tbody = document.getElementById('admin-table-body');
   if (!tbody) return;
   tbody.innerHTML = '';
-  let a=0, t=0, ab=0;
+  let a=0, t=0, ab=0, un=0;
   list.forEach(r => {
-    const att = (r.attendance || '').toLowerCase().trim();
-    const isAbsent = att === 'absent' || att.includes('不参加') || att.includes('欠席') || att.includes('✕') || att.includes('×') || att === 'no' || att.includes('無理') || att.includes('不可');
-    const isTentative = att === 'tentative' || att.includes('調整') || att.includes('保留') || att.includes('△') || att === 'maybe' || att.includes('未定');
-    const isAttending = !isAbsent && !isTentative;
+    const att = (r.attendance || '').toString().toLowerCase().trim();
+    const isAbsent = att === 'absent' || att === 'no' || att.includes('不参加') || att.includes('欠席') || att.includes('✕') || att.includes('×') || att.includes('無理') || att.includes('不可') || att.includes('辞退');
+    const isTentative = att === 'tentative' || att === 'maybe' || att.includes('調整') || att.includes('保留') || att.includes('△') || att.includes('未定') || att.includes('検討');
+    const isAttending = att === 'attending' || att === 'yes' || att === '参加' || att === '参加する' || att === '出席' || att.includes('行く') || att.includes('参加');
+    // 空欄・未回答は「未回答」として扱う（参加扱いにしない）
+    const isUnanswered = att === '' || att === '未回答' || att === '未定';
 
     if (isAttending) a++;
     else if (isTentative) t++;
     else if (isAbsent) ab++;
+    else if (isUnanswered) un++;
 
-    const bc = isAttending ? 'badge--g' : (isTentative ? 'badge--y' : 'badge--r');
-    const bl = isAttending ? '参加' : (isTentative ? '調整中' : '不参加');
+    const bc = isAttending ? 'badge--g' : (isTentative ? 'badge--y' : (isAbsent ? 'badge--r' : 'badge--n'));
+    const bl = isAttending ? '参加' : (isTentative ? '調整中' : (isAbsent ? '不参加' : '未回答'));
 
     const tr = document.createElement('tr');
     tr.innerHTML = `<td><strong>${esc(r.name)}</strong><br><small style="color:var(--c-txt3)">${esc(r.nickname||'')}</small></td><td><span class="badge ${bc}">${bl}</span></td><td>${esc(r.contact)}</td><td>${DRINK[r.drink]||esc(r.drink)||'-'}</td><td>${SAUNA[r.sauna]||esc(r.sauna)||'-'}</td><td style="max-width:160px;font-size:.78rem;color:var(--c-txt2)">${esc(r.message||'')}</td><td style="font-size:.72rem;color:var(--c-txt3)">${esc(r.timestamp||'')}</td>`;
@@ -382,6 +413,7 @@ function updateAdmin() {
   if (elTen) elTen.textContent = t + ' 名';
   if (elAbs) elAbs.textContent = ab + ' 名';
   
+  // 見込み集金: 参加人数 × 1人あたり会費（スライダー連動の実勢値を使用）
   const slider = document.getElementById('headcount-slider');
   const sv = slider ? +slider.value : 18;
   const cpp = Math.ceil((345000 + 8400*sv)/sv/100)*100;

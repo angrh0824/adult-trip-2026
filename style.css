@@ -489,6 +489,7 @@ body::after{
 .badge--g{background:rgba(94,201,154,.08);color:var(--c-green)}
 .badge--y{background:rgba(212,180,110,.08);color:var(--c-gold)}
 .badge--r{background:rgba(224,112,112,.08);color:var(--c-red)}
+.badge--n{background:rgba(160,160,170,.08);color:var(--c-txt3)}
 
 /* DB Section */
 .db-section{background:rgba(255,255,255,.01);border:1px solid var(--c-line);border-radius:var(--r-lg);padding:24px;margin-bottom:20px}

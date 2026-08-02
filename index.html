@@ -985,13 +985,17 @@
         <h4>Google Apps Script (GAS)</h4>
         <p>スプレッドシートの「拡張機能」➔「Apps Script」に以下を貼り付けてデプロイし、URLを入力。</p>
         <pre class="code-box">// 1. スプレッドシートの「拡張機能」➔「Apps Script」に以下を貼り付けて保存
+// ※ シート名が「シート1」でない場合は、下記の 'シート1' を実際のシート名に変更してください
 function doGet(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  // シート名を明示指定（アクティブシートに依存しない）
+  var sheet = ss.getSheetByName('シート1') || ss.getActiveSheet();
   var rows = sheet.getDataRange().getValues();
   var rsvps = [];
-  for (var i = 1; i &lt; rows.length; i++) {
+  for (var i = 1; i < rows.length; i++) {
     var r = rows[i];
-    if (!r[1]) continue;
+    // 名前（B列）とタイムスタンプ（A列）の両方が空の行のみスキップ
+    if (!r[1] && !r[0]) continue;
     rsvps.push({
       timestamp: r[0] ? Utilities.formatDate(new Date(r[0]), "JST", "yyyy/MM/dd HH:mm") : "",
       name: r[1]||"", nickname: r[2]||"", contact: r[3]||"",
@@ -1003,7 +1007,8 @@ function doGet(e) {
 }
 
 function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName('シート1') || ss.getActiveSheet();
   var data = JSON.parse(e.postData.contents);
   sheet.appendRow([new Date(), data.name, data.nickname, data.contact, data.attendance, data.drink, data.sauna, data.message]);
   return ContentService.createTextOutput(JSON.stringify({result:"success"}))
