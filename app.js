@@ -382,22 +382,19 @@ function updateAdmin() {
   const list = getRSVPs(), tbody = document.getElementById('admin-table-body');
   if (!tbody) return;
   tbody.innerHTML = '';
-  let a=0, t=0, ab=0, un=0;
+  let a=0, t=0, ab=0;
   list.forEach(r => {
     const att = (r.attendance || '').toString().toLowerCase().trim();
     const isAbsent = att === 'absent' || att === 'no' || att.includes('不参加') || att.includes('欠席') || att.includes('✕') || att.includes('×') || att.includes('無理') || att.includes('不可') || att.includes('辞退');
     const isTentative = att === 'tentative' || att === 'maybe' || att.includes('調整') || att.includes('保留') || att.includes('△') || att.includes('未定') || att.includes('検討');
-    const isAttending = att === 'attending' || att === 'yes' || att === '参加' || att === '参加する' || att === '出席' || att.includes('行く') || att.includes('参加');
-    // 空欄・未回答は「未回答」として扱う（参加扱いにしない）
-    const isUnanswered = att === '' || att === '未回答' || att === '未定';
+    const isAttending = !isAbsent && !isTentative;
 
-    if (isAttending) a++;
+    if (isAbsent) ab++;
     else if (isTentative) t++;
-    else if (isAbsent) ab++;
-    else if (isUnanswered) un++;
+    else a++;
 
-    const bc = isAttending ? 'badge--g' : (isTentative ? 'badge--y' : (isAbsent ? 'badge--r' : 'badge--n'));
-    const bl = isAttending ? '参加' : (isTentative ? '調整中' : (isAbsent ? '不参加' : '未回答'));
+    const bc = isAttending ? 'badge--g' : (isTentative ? 'badge--y' : 'badge--r');
+    const bl = isAttending ? '参加' : (isTentative ? '調整中' : '不参加');
 
     const tr = document.createElement('tr');
     tr.innerHTML = `<td><strong>${esc(r.name)}</strong><br><small style="color:var(--c-txt3)">${esc(r.nickname||'')}</small></td><td><span class="badge ${bc}">${bl}</span></td><td>${esc(r.contact)}</td><td>${DRINK[r.drink]||esc(r.drink)||'-'}</td><td>${SAUNA[r.sauna]||esc(r.sauna)||'-'}</td><td style="max-width:160px;font-size:.78rem;color:var(--c-txt2)">${esc(r.message||'')}</td><td style="font-size:.72rem;color:var(--c-txt3)">${esc(r.timestamp||'')}</td>`;
