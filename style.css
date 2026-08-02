@@ -1008,11 +1008,14 @@ body::after{
   border-top: 1px solid var(--c-line);
   border-bottom: 1px solid var(--c-line);
   background: rgba(255,255,255,.01);
+  user-select: none;
 }
 .marquee__track {
-  display: flex;
-  width: max-content;
-  animation: marqueeScroll 30s linear infinite;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  width: max-content !important;
+  animation: marqueeScroll 25s linear infinite !important;
+  -webkit-animation: marqueeScroll 25s linear infinite !important;
   font-family: var(--ff-en);
   font-size: 1.2rem;
   letter-spacing: .2em;
@@ -1021,7 +1024,7 @@ body::after{
   will-change: transform;
 }
 .marquee__group {
-  display: flex;
+  display: flex !important;
   align-items: center;
   flex-shrink: 0;
   white-space: nowrap;
@@ -1030,9 +1033,13 @@ body::after{
   margin: 0 24px;
   color: var(--c-gold);
 }
+@-webkit-keyframes marqueeScroll {
+  0% { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+  100% { -webkit-transform: translate3d(-50%, 0, 0); transform: translate3d(-50%, 0, 0); }
+}
 @keyframes marqueeScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+  100% { -webkit-transform: translate3d(-50%, 0, 0); transform: translate3d(-50%, 0, 0); }
 }
 
 /* ─── Card Hover Lift with Glow ─── */
@@ -1139,11 +1146,8 @@ body::after{
 /* ─── Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
   .aurora-blob,
-  .hero__title .char,
-  .hero__title .char--gold,
   .hero__badge::before,
   .sec__bar::after,
-  .marquee__track,
   .float-slow,
   .glow-pulse {
     animation: none !important;
