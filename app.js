@@ -418,7 +418,9 @@ function updateAdmin() {
   if (elTot) elTot.textContent = list.length;
 }
 
-function esc(s) { return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
 
 function exportCSV() {
   const list = getRSVPs();
@@ -426,7 +428,7 @@ function exportCSV() {
   const ST = { attending:'参加', tentative:'調整中', absent:'不参加' };
   let csv = '\uFEFF氏名,あだ名,連絡先,ステータス,お酒,サウナ,メッセージ,日時\n';
   list.forEach(r => {
-    csv += [r.name,r.nickname,r.contact,ST[r.attendance]||'',r.drink,r.sauna,r.message,r.timestamp].map(v=>`"${(v||'').replace(/"/g,'""')}"`).join(',') + '\n';
+    csv += [r.name,r.nickname,r.contact,ST[r.attendance]||'',r.drink,r.sauna,r.message,r.timestamp].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',') + '\n';
   });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
