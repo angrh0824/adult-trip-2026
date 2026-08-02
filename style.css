@@ -1004,42 +1004,57 @@ body::after{
   overflow: hidden;
   white-space: nowrap;
   position: relative;
-  padding: 20px 0;
+  padding: 16px 0;
   border-top: 1px solid var(--c-line);
   border-bottom: 1px solid var(--c-line);
   background: rgba(255,255,255,.01);
   user-select: none;
+  pointer-events: none;
+  width: 100%;
 }
 .marquee__track {
   display: flex !important;
+  flex-direction: row !important;
   flex-wrap: nowrap !important;
   width: max-content !important;
-  animation: marqueeScroll 25s linear infinite !important;
-  -webkit-animation: marqueeScroll 25s linear infinite !important;
-  font-family: var(--ff-en);
-  font-size: 1.2rem;
-  letter-spacing: .2em;
-  color: var(--c-txt3);
-  font-style: italic;
+  animation: marqueeScroll 22s linear infinite !important;
+  -webkit-animation: marqueeScroll 22s linear infinite !important;
   will-change: transform;
 }
 .marquee__group {
   display: flex !important;
   align-items: center;
-  flex-shrink: 0;
-  white-space: nowrap;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  font-family: var(--ff-en);
+  font-size: 1.1rem;
+  letter-spacing: .18em;
+  color: var(--c-txt3);
+  font-style: italic;
 }
 .marquee__group span {
-  margin: 0 24px;
+  margin: 0 20px;
   color: var(--c-gold);
 }
 @-webkit-keyframes marqueeScroll {
-  0% { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
-  100% { -webkit-transform: translate3d(-50%, 0, 0); transform: translate3d(-50%, 0, 0); }
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 @keyframes marqueeScroll {
-  0% { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
-  100% { -webkit-transform: translate3d(-50%, 0, 0); transform: translate3d(-50%, 0, 0); }
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 /* ─── Card Hover Lift with Glow ─── */
